@@ -1,8 +1,9 @@
 import React from 'react';
+import Header from "../Header/Header";
 
 function Main() {
     return (
-        <p>текст в Main</p>
+        <Header/>
     );
 }
 
