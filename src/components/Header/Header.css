@@ -1,3 +1,31 @@
 .header {
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 
+.header__logo-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 0;
+    padding: 0;
+}
+
+.header__film-link {
+    /*margin: auto 0 auto 0;*/
+    color: #FFFFFF;
+    /*font-style: normal;*/
+    /*font-weight: normal;*/
+    /*font-size: 18px;*/
+    /*line-height: 22px;*/
+    /*text-align: right;*/
+    text-decoration: none;
+    background-color: black;
+    border: none;
 }

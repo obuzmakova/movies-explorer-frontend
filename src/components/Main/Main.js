@@ -3,7 +3,7 @@ import Header from "../Header/Header";
 
 function Main() {
     return (
-        <Header/>
+        <Header filmText="Фильмы" svaeFilmText="Сохраненные фильмы"/>
     );
 }
 
