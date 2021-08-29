@@ -17,15 +17,35 @@
     padding: 0;
 }
 
-.header__film-link {
-    /*margin: auto 0 auto 0;*/
+.header__logo {
+    margin-right: 44px;
+}
+
+.header__link {
+    margin: auto 0 auto 0;
     color: #FFFFFF;
-    /*font-style: normal;*/
-    /*font-weight: normal;*/
-    /*font-size: 18px;*/
-    /*line-height: 22px;*/
-    /*text-align: right;*/
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: right;
     text-decoration: none;
     background-color: black;
     border: none;
+}
+
+.header__button {
+    margin: auto 0 auto 30px;
+    width: 76px;
+    height: 32px;
+    color: black;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #3DDC84;
+    border: none;
+    border-radius: 3px;
 }

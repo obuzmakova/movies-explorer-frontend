@@ -1,9 +1,13 @@
 import React from 'react';
-import Header from "../Header/Header";
+import Promo from "../Promo/Promo";
+import AboutProject from "../AboutProject/AboutProject";
 
 function Main() {
     return (
-        <Header filmText="Фильмы" svaeFilmText="Сохраненные фильмы"/>
+        <div>
+            <Promo />
+            <AboutProject />
+        </div>
     );
 }
 

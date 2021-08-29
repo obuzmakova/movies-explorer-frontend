@@ -1,0 +1,22 @@
+.nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 308px;
+    margin: 0 auto;
+}
+
+.nav__button {
+    width: 96px;
+    height: 36px;
+    color: white;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #303030;
+    border: none;
+    border-radius: 10px;
+}

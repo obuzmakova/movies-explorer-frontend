@@ -6,12 +6,14 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
+import Header from "../Header/Header";
 
 function App() {
   return (
     <div className="app">
         <Switch>
             <Route exact path="/">
+                <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" regText="Регистрация" authText="Войти"/>
                 <Main />
             </Route>
             <Route path="/movies">
