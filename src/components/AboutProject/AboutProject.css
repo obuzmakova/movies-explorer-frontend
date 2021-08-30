@@ -1,10 +1,10 @@
 .about {
     height: 608px;
+    width: 89%;
     margin: 0 auto;
 }
 
 .about__title {
-    width: 89%;
     margin: 0 auto;
     padding-top: 110px;
     border-bottom: 1px solid #DADADA;
@@ -18,4 +18,69 @@
     line-height: 27px;
     letter-spacing: -0.04em;
     text-align: left;
+}
+
+.about__content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 40px;
+    row-gap: 26px;
+    padding-top: 70px;
+}
+
+.about__text {
+    margin: 0 auto 0 0;
+    text-align: left;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.04em;
+}
+
+.about__paragraph {
+    margin: 0 auto 0 0;
+    text-align: left;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.about__graph {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 36px 17px;
+    row-gap: 14px;
+    padding-top: 110px;
+}
+
+.about__period {
+    margin: 0 auto;
+    padding: 9px 0;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px;
+    width: 100%;
+}
+
+.about__period_first {
+    color: black;
+    background-color: #3DDC84;
+}
+
+.about__period-second {
+    background-color: #303030;
+}
+
+.about__description {
+    margin: 0 auto;
+    text-align: center;
+    color: #8B8B8B;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 17px;
 }

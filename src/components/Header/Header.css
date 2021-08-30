@@ -30,7 +30,7 @@
     line-height: 18px;
     text-align: right;
     text-decoration: none;
-    background-color: black;
+    background-color: #202020;
     border: none;
 }
 
@@ -38,7 +38,7 @@
     margin: auto 0 auto 30px;
     width: 76px;
     height: 32px;
-    color: black;
+    color: #202020;
     font-style: normal;
     font-weight: normal;
     font-size: 13px;

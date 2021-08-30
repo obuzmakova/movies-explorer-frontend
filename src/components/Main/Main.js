@@ -4,10 +4,10 @@ import AboutProject from "../AboutProject/AboutProject";
 
 function Main() {
     return (
-        <div>
+        <main>
             <Promo />
             <AboutProject />
-        </div>
+        </main>
     );
 }
 
