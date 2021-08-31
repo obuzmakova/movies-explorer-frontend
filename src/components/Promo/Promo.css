@@ -12,6 +12,13 @@
     }
 }
 
+@media screen and (max-width: 555px){
+    .promo {
+        width: 91%;
+        height: 586px;
+    }
+}
+
 .promo__title {
     margin: 0 auto;
     padding-top: 160px;
@@ -35,5 +42,15 @@
         line-height: 52px;
         letter-spacing: -0.04em;
         text-align: center;
+    }
+}
+
+@media screen and (max-width: 555px){
+    .promo__title {
+        padding-top: 220px;
+        padding-bottom: 212px;
+        max-width: 292px;
+        font-size: 29px;
+        line-height: 37px;
     }
 }
