@@ -5,12 +5,26 @@
     margin: 0 auto;
 }
 
+@media screen and (max-width: 768px){
+    .me{
+        width: 87%;
+        height: 994px;
+    }
+}
+
 .me__about {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     height: 327px;
     margin: 66px 0 100px 0;
+}
+
+@media screen and (max-width: 768px){
+    .me__about {
+        margin-bottom: 90px;
+        height: 307px;
+    }
 }
 
 .me__description {
@@ -20,10 +34,22 @@
     justify-content: space-between;
 }
 
+@media screen and (max-width: 768px){
+    .me__description {
+        max-width: 364px;
+    }
+}
+
 .me__photo {
     object-fit: cover;
     width: 270px;
     border-radius: 10px;
+}
+
+@media screen and (max-width: 768px){
+    .me__photo {
+        width: 255px;
+    }
 }
 
 .me__name {
@@ -36,6 +62,14 @@
     text-align: left;
 }
 
+@media screen and (max-width: 768px){
+    .me__name {
+        margin-bottom: 16px;
+        font-size: 40px;
+        line-height: 40px;
+    }
+}
+
 .me__occupation {
     margin: 0 auto 26px 0;
     font-size: 18px;
@@ -45,6 +79,14 @@
     text-align: left;
 }
 
+@media screen and (max-width: 768px){
+    .me__occupation {
+        margin-bottom: 20px;
+        font-size: 12px;
+        line-height: 18px;
+    }
+}
+
 .me__text {
     margin: 0 auto;
     font-size: 14px;
@@ -52,6 +94,13 @@
     font-weight: 400;
     line-height: 22px;
     text-align: left;
+}
+
+@media screen and (max-width: 768px){
+    .me__text {
+        font-size: 12px;
+        line-height: 18px;
+    }
 }
 
 .me__links {
@@ -105,4 +154,10 @@
     line-height: 50px;
     letter-spacing: -0.04em;
     text-align: left;
+}
+
+@media screen and (max-width: 768px){
+    .me__portfolio-text {
+        font-size: 28px;
+    }
 }

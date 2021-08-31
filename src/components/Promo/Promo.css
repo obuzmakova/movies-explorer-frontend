@@ -6,6 +6,12 @@
     border-radius: 10px;
 }
 
+@media screen and (max-width: 768px){
+    .promo {
+        height: 834px;
+    }
+}
+
 .promo__title {
     margin: 0 auto;
     padding-top: 160px;
@@ -18,4 +24,16 @@
     line-height: 58px;
     text-align: center;
     text-decoration: none;
+}
+
+@media screen and (max-width: 768px){
+    .promo__title {
+        padding-top: 350px;
+        padding-bottom: 314px;
+        max-width: 680px;
+        font-size: 40px;
+        line-height: 52px;
+        letter-spacing: -0.04em;
+        text-align: center;
+    }
 }

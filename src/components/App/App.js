@@ -7,16 +7,19 @@ import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 function App() {
   return (
     <div className="app">
         <Switch>
             <Route exact path="/">
-                <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" regText="Регистрация" authText="Войти"/>
+                <Header regText="Регистрация" authText="Войти"/>
                 <Main />
+                <Footer />
             </Route>
             <Route path="/movies">
+                <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" regText="Регистрация" authText="Войти"/>
                 <Movies />
             </Route>
             <Route path="/saved-movies">

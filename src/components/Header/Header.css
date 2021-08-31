@@ -1,11 +1,18 @@
 .header {
-    width: 90%;
+    width: 89%;
     margin: 0 auto;
-    padding-top: 18px;
-    padding-bottom: 18px;
+    padding-top: 29px;
+    padding-bottom: 38px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+@media screen and (max-width: 768px){
+    .header {
+        width: 87%;
+        padding-top: 18px;
+    }
 }
 
 .header__logo-nav {
@@ -22,7 +29,7 @@
 }
 
 .header__link {
-    margin: auto 0 auto 0;
+    margin: auto 16px auto 0;
     color: #FFFFFF;
     font-style: normal;
     font-weight: normal;
@@ -34,8 +41,12 @@
     border: none;
 }
 
+.header__link:last-of-type {
+    margin: auto 0;
+}
+
 .header__button {
-    margin: auto 0 auto 30px;
+    margin: auto 0 auto 14px;
     width: 76px;
     height: 32px;
     color: #202020;

@@ -8,7 +8,7 @@
 
 .nav__button {
     width: 96px;
-    height: 36px;
+    padding: 10px 0;
     color: white;
     font-style: normal;
     font-weight: normal;

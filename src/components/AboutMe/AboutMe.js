@@ -5,9 +5,9 @@ import portfolioArrow from "../../images/portfolio-arrow.svg"
 
 function AboutMe() {
     return (
-        <section className="me">
-            <div className="about__title">
-                <h2 className="about__title-text">Студент</h2>
+        <section id="aboutMe" className="me">
+            <div className="me__title about__title">
+                <h2 className="me__title-text about__title-text">Студент</h2>
             </div>
             <div className="me__about">
                 <div className="me__description">

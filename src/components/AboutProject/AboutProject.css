@@ -4,10 +4,23 @@
     margin: 0 auto;
 }
 
+@media screen and (max-width: 768px) {
+    .about {
+        height: 585px;
+        width: 87%;
+    }
+}
+
 .about__title {
     margin: 0 auto;
     padding-top: 110px;
     border-bottom: 1px solid #DADADA;
+}
+
+@media screen and (max-width: 768px){
+    .about__title {
+        padding-top: 90px;
+    }
 }
 
 .about__title-text {
@@ -47,12 +60,25 @@
     line-height: 20px;
 }
 
+@media screen and (max-width: 768px){
+    .about__paragraph {
+        font-size: 12px;
+        line-height: 18px;
+    }
+}
+
 .about__graph {
     display: grid;
     grid-template-columns: 1fr 4fr;
     grid-template-rows: 36px 17px;
     row-gap: 14px;
     padding-top: 110px;
+}
+
+@media screen and (max-width: 768px){
+    .about__graph {
+        padding-top: 93px;
+    }
 }
 
 .about__period {
