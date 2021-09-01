@@ -6,9 +6,15 @@
 }
 
 @media screen and (max-width: 768px){
-    .me{
+    .me {
         width: 87%;
         height: 994px;
+    }
+}
+
+@media screen and (max-width: 555px){
+    .me {
+        height: 1100px;
     }
 }
 
@@ -27,6 +33,16 @@
     }
 }
 
+@media screen and (max-width: 555px){
+    .me__about {
+        width: 100%;
+        height: 594px;
+        margin-top: 60px;
+        margin-bottom: 69px;
+        flex-flow: wrap-reverse;
+    }
+}
+
 .me__description {
     max-width: 600px;
     display: flex;
@@ -40,6 +56,12 @@
     }
 }
 
+@media screen and (max-width: 555px){
+    .me__description {
+        margin: 0 auto;
+    }
+}
+
 .me__photo {
     object-fit: cover;
     width: 270px;
@@ -49,6 +71,14 @@
 @media screen and (max-width: 768px){
     .me__photo {
         width: 255px;
+    }
+}
+
+@media screen and (max-width: 555px){
+    .me__photo {
+        margin: 0 auto 40px auto;
+        width: 100%;
+        height: 352px;
     }
 }
 
@@ -70,6 +100,14 @@
     }
 }
 
+@media screen and (max-width: 555px){
+    .me__name {
+        margin-bottom: 20px;
+        font-size: 30px;
+        line-height: 36px;
+    }
+}
+
 .me__occupation {
     margin: 0 auto 26px 0;
     font-size: 18px;
@@ -84,6 +122,13 @@
         margin-bottom: 20px;
         font-size: 12px;
         line-height: 18px;
+    }
+}
+
+@media screen and (max-width: 555px){
+    .me__occupation {
+        font-size: 11px;
+        line-height: 16px;
     }
 }
 
@@ -103,12 +148,25 @@
     }
 }
 
+@media screen and (max-width: 555px){
+    .me__text {
+        font-size: 11px;
+        line-height: 16px;
+    }
+}
+
 .me__links {
     margin: auto auto 0 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 132px;
+}
+
+@media screen and (max-width: 555px){
+    .me__links {
+        margin-top: 40px;
+    }
 }
 
 .me__link {
@@ -131,6 +189,13 @@
     font-weight: 400;
     line-height: 20px;
     text-align: left;
+}
+
+@media screen and (max-width: 555px){
+    .me__portfolio {
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
 }
 
 .me__portfolio-link {
@@ -159,5 +224,12 @@
 @media screen and (max-width: 768px){
     .me__portfolio-text {
         font-size: 28px;
+    }
+}
+
+@media screen and (max-width: 555px){
+    .me__portfolio-text {
+        font-size: 18px;
+        line-height: 28px;
     }
 }
