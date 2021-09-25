@@ -19,7 +19,7 @@ function App() {
                 <Footer />
             </Route>
             <Route path="/movies">
-                <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" regText="Регистрация" authText="Войти"/>
+                <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" account="Аккаунт"/>
                 <Movies />
             </Route>
             <Route path="/saved-movies">

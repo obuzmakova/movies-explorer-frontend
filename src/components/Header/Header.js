@@ -11,8 +11,10 @@ function Header(props) {
                 {props.saveFilmText ? <a href="#" className="header__link">{props.saveFilmText}</a> : null}
             </div>
             <nav className="header__logo-nav">
-                <button className="header__link">{props.regText}</button>
-                <button className="header__button">{props.authText}</button>
+                {props.regText ? <button className="header__link">{props.regText}</button> : null}
+                {props.authText ? <button className="header__button">{props.authText}</button> : null}
+                {props.account ? <button className="header__link">{props.account}</button> : null}
+                {props.account ? <img className="header__account-logo"/> : null}
             </nav>
         </header>
     );
