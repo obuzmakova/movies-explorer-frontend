@@ -8,6 +8,8 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import MenuPopup from "../MenuPopup/MenuPopup";
+import SearchForm from "../SearchForm/SearchForm";
 
 function App() {
   return (
@@ -20,7 +22,10 @@ function App() {
             </Route>
             <Route path="/movies">
                 <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" account="Аккаунт"/>
+                <MenuPopup selectedPage="Фильмы"/>
+                <SearchForm/>
                 <Movies />
+                <Footer />
             </Route>
             <Route path="/saved-movies">
                 <SavedMovies />
@@ -38,8 +43,8 @@ function App() {
                 <Login />
                 <Profile />
             </Route>
-
         </Switch>
+
     </div>
   );
 }

@@ -84,19 +84,21 @@
 
 .header__account-logo {
     margin: auto 0 auto 13px;
-    width: 10px;
-    height: 10px;
-    padding: 10px 10px;
+    padding: 19px 19px;
     background-color: #313131;
     border: none;
     border-radius: 6px;
     background-image: url("../../images/account-logo.svg");
     background-repeat: no-repeat;
     background-position: 50% 50%;
+    background-size: 11px 11px;
 }
 
 @media screen and (max-width: 768px){
     .header__account-logo {
         background-image: url("../../images/menu-header.svg");
+        background-color: #202020;
+        background-size: 28px 28px;
+        border-radius: 0;
     }
 }
