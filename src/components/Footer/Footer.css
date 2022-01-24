@@ -94,6 +94,10 @@
     text-align: left;
 }
 
+.footer__link:hover {
+    opacity: 0.8;
+}
+
 @media screen and (max-width: 555px){
     .footer__link {
         margin: 0 auto 12px auto;

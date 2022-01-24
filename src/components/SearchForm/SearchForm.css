@@ -1,12 +1,13 @@
 .search {
     background-color: #2F2F2F;
     width: 89%;
-    margin: 70px auto 80px auto;
+    margin: 70px auto 69px auto;
     padding: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     border-radius: 9px;
+    border-bottom: 1px solid #424242;
 }
 
 .search__input {

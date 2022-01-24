@@ -1,10 +1,9 @@
 import React from 'react';
 
-function MenuPopup() {
+function MenuPopup(props) {
     return (
-        <div className="popup">
-            <nav className="">
-            </nav>
+        <div className={`popup ${props.isOpen ? `popup_opened` : ""}`}>
+
         </div>
     );
 }

@@ -27,6 +27,10 @@
     border-radius: 10px;
 }
 
+.nav__button:hover {
+    opacity: 0.8;
+}
+
 @media screen and (max-width: 555px){
     .nav__button {
         width: 82px;

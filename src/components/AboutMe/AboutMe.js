@@ -12,7 +12,7 @@ function AboutMe() {
             <div className="me__about">
                 <div className="me__description">
                     <h3 className="me__name">Ольга</h3>
-                    <p className="me__occupation">Фронтенд-разработчик, 30 лет</p>
+                    <p className="me__occupation">Фронтенд-разработчик, 31 год</p>
                     <p className="me__text">Я живу в Москве, закончила факультет коммерции и логистики СПбГУЭФ. С 2019 года студентка школы программирования "Школа 21". C 2021 работаю фронтендером в Сбере.</p>
                     <nav className="me__links">
                         <a className="me__link" href="https://www.facebook.com/o.buzmakova/" target="_blank" rel="noreferrer">Facebook</a>
