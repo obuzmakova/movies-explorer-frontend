@@ -42,7 +42,7 @@ function Header(props) {
                     {props.authText ? <Link to="/signin" className="header__button">{props.authText}</Link> : null}
                     {props.accountText ? <Link to="/profile" activeClassName="header__link_active"
                                                className="header__link">{props.accountText}</Link> : null}
-                    {props.accountText ? <img className="header__account-logo"/> : null}
+                    {props.accountText ? <img className="header__account-logo" alt="Иконка для аккаунта"/> : null}
                 </nav>
             </header>
         );
