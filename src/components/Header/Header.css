@@ -47,10 +47,6 @@
     border: none;
 }
 
-.header__link:last-of-type {
-    margin: auto 0;
-}
-
 .header__link:hover {
     opacity: 0.7;
 }
@@ -91,13 +87,15 @@
 
 @media screen and (max-width: 555px){
     .header__button {
+        width: 54px;
+        height: 26px;
+        line-height: 26px;
         font-size: 10px;
-        line-height: 16px;
     }
 }
 
 .header__account-logo {
-    margin: auto 0 auto 13px;
+    margin: auto 0;
     padding: 19px 19px;
     background-color: #313131;
     border: none;
@@ -109,7 +107,7 @@
 }
 
 .header__account-logo:hover {
-    opacity: 0.7;
+    opacity: 0.8;
 }
 
 @media screen and (max-width: 768px){

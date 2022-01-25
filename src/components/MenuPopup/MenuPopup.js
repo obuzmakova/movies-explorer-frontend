@@ -8,12 +8,14 @@ function MenuPopup(props) {
             <div className="popup__container">
                 <button type="button" className="popup__close-button" onClick={props.onClose}/>
                 <nav className="popup__pages-nav">
-                    <NavLink to="/" activeClassName="popup__link_active" className="popup__link">Главная</NavLink>
-                    <NavLink to="/movies" activeClassName="popup__link_active" className="popup__link">Фильмы</NavLink>
-                    <NavLink to="/saved-movies" activeClassName="popup__link_active" className="popup__link">Сохраненные фильмы</NavLink>
+                    <NavLink onClick={props.onClose} exact to="/" activeClassName="popup__link_active" className="popup__link">Главная</NavLink>
+                    <NavLink onClick={props.onClose} to="/movies" activeClassName="popup__link_active" className="popup__link">Фильмы</NavLink>
+                    <NavLink onClick={props.onClose} to="/saved-movies" activeClassName="popup__link_active" className="popup__link">Сохраненные фильмы</NavLink>
                 </nav>
-                <Link to="/profile" activeClassName="popup__link_active" className="popup__link">Аккаунт</Link>
-                <img className="popup__account-logo" alt="Иконка для аккаунта"/>
+                <nav className="popup__account-nav">
+                    <NavLink onClick={props.onClose} to="/profile" activeClassName="popup__link_active" className="popup__link popup__link-account">Аккаунт</NavLink>
+                    <Link onClick={props.onClose} to="/profile" className="popup__account-logo"/>
+                </nav>
             </div>
         </div>
     );
