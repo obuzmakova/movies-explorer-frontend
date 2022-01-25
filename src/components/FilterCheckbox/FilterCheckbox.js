@@ -1,12 +1,13 @@
 import React from 'react';
 import './FilterCheckbox.css';
 
-function FilterCheckbox() {
+function FilterCheckbox(props) {
     return (
-        <div className="filter-checkbox">
-            <nav className="">
-            </nav>
-        </div>
+        <label className="filter">
+            <input className="filter__checkbox" type="checkbox" defaultChecked={props.isChecked} onChange={props.handleChange} />
+            <div className="filter__slider"/>
+            <p className="filter__text">Короткометражки</p>
+        </label>
     );
 }
 

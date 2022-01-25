@@ -40,8 +40,8 @@ function Header(props) {
                 <nav className="header__logo-nav">
                     {props.regText ? <Link to="/signup" className="header__link">{props.regText}</Link> : null}
                     {props.authText ? <Link to="/signin" className="header__button">{props.authText}</Link> : null}
-                    {props.accountText ? <Link to="/profile" activeClassName="header__link_active"
-                                               className="header__link">{props.accountText}</Link> : null}
+                    {props.accountText ? <NavLink to="/profile" activeClassName="header__link_active"
+                                               className="header__link">{props.accountText}</NavLink> : null}
                     {props.accountText ? <Link to="/profile" className="header__account-logo"/> : null}
                 </nav>
             </header>

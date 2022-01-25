@@ -14,6 +14,7 @@ import SearchForm from "../SearchForm/SearchForm";
 
 function App() {
     const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
+    const [isCheckboxState, setCheckboxState] = useState(true);
 
     function handleMenuPopupOpen() {
         setMenuPopupOpen(true);
@@ -21,6 +22,10 @@ function App() {
 
     function handleMenuPopupClose() {
         setMenuPopupOpen(false);
+    }
+
+    function handleCheckboxState() {
+        setCheckboxState(!isCheckboxState);
     }
 
     return (
@@ -34,7 +39,7 @@ function App() {
                 <Route path="/movies">
                     <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                             onOpenMenu={handleMenuPopupOpen}/>
-                    <SearchForm/>
+                    <SearchForm isChecked={isCheckboxState} handleChange={handleCheckboxState}/>
                     <Movies />
                     <Footer />
                 </Route>

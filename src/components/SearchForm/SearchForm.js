@@ -3,18 +3,15 @@ import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import './SearchForm.css';
 import searchIcon from "../../images/search-icon.svg";
 
-function SearchForm() {
+function SearchForm(props) {
     return (
         <div className="search">
-            <div className="search__input">
+            <div className="search__area">
                 <img className="search__icon" alt="Лупа" src={searchIcon}/>
-                {/*TODO id="email" name="email" type="email" placeholder="Email"*/}
                 <input placeholder="Фильм" className="search__text"/>
-            </div>
-            <div className="search__buttons">
                 <button className="search__button"/>
-                <FilterCheckbox/>
             </div>
+            <FilterCheckbox isChecked={props.isChecked} handleChange={props.handleChange}/>
         </div>
     );
 }
