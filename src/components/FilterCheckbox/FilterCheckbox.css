@@ -1,7 +1,13 @@
 .filter {
     display: flex;
     flex-direction: row;
-    margin: 45px auto 44px auto;
+    margin: auto;
+}
+
+@media screen and (max-width: 650px){
+    .filter {
+        margin: 45px auto 44px auto;
+    }
 }
 
 .filter__checkbox {
@@ -22,23 +28,36 @@
     content: "";
     height: 16px;
     width: 16px;
-    left: 95px;
-    top: 288px;
+    top: 172px;
     background-color: #F5F5F5;
     transition: .4s;
     border-radius: 50%;
 }
+
+@media screen and (max-width: 650px){
+    .filter__slider:before {
+        top: 288px;
+    }
+}
+
 .filter__checkbox:checked + .filter__slider {
     background-color: #2BE080;
 }
+
 .filter__checkbox:checked + .filter__slider:before {
     transform: translateX(16px);
 }
 
 .filter__text {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 400;
     line-height: 18px;
     text-align: left;
     margin-left: 13px;
+}
+
+@media screen and (max-width: 650px){
+    .filter__text{
+        font-size: 11px;
+    }
 }
