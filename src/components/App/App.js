@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
-import Movies from '../Movies/Movies';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
@@ -15,6 +15,7 @@ import SearchForm from "../SearchForm/SearchForm";
 function App() {
     const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
     const [isCheckboxState, setCheckboxState] = useState(true);
+    const [savedCard, setCardSaved] = useState(false);
 
     function handleMenuPopupOpen() {
         setMenuPopupOpen(true);
@@ -26,6 +27,10 @@ function App() {
 
     function handleCheckboxState() {
         setCheckboxState(!isCheckboxState);
+    }
+
+    function handleCardSave() {
+        setCardSaved(!savedCard);
     }
 
     return (
@@ -40,7 +45,7 @@ function App() {
                     <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                             onOpenMenu={handleMenuPopupOpen}/>
                     <SearchForm isChecked={isCheckboxState} handleChange={handleCheckboxState}/>
-                    <Movies />
+                    <MoviesCardList onCardSave={handleCardSave} />
                     <Footer />
                 </Route>
                 <Route path="/saved-movies">
