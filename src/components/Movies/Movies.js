@@ -1,8 +1,9 @@
 import React from 'react';
+import './Movies.css';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from "../SearchForm/SearchForm";
 
-function SavedMovies(props) {
+function Movies(props) {
     return (
         <div>
             <SearchForm isChecked={props.isChecked} handleChange={props.handleChange}/>
@@ -11,4 +12,4 @@ function SavedMovies(props) {
     );
 }
 
-export default SavedMovies;
+export default Movies;

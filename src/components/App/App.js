@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
@@ -10,7 +10,6 @@ import Login from '../Login/Login';
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import MenuPopup from "../MenuPopup/MenuPopup";
-import SearchForm from "../SearchForm/SearchForm";
 
 function App() {
     const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
@@ -39,12 +38,14 @@ function App() {
                 <Route path="/movies">
                     <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                             onOpenMenu={handleMenuPopupOpen}/>
-                    <SearchForm isChecked={isCheckboxState} handleChange={handleCheckboxState}/>
-                    <MoviesCardList/>
+                    <Movies isChecked={isCheckboxState} handleChange={handleCheckboxState}/>
                     <Footer />
                 </Route>
                 <Route path="/saved-movies">
-                    <SavedMovies />
+                    <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
+                            onOpenMenu={handleMenuPopupOpen}/>
+                    <SavedMovies isChecked={isCheckboxState} handleChange={handleCheckboxState}/>
+                    <Footer />
                 </Route>
                 <Route path="/profile">
                     <Profile />
