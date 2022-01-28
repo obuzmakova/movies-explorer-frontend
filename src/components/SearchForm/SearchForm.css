@@ -37,7 +37,7 @@
     align-items: center;
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 1020px){
     .search__area {
         width: 70%;
     }
@@ -83,7 +83,7 @@
     width: 80%;
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 1020px){
     .search__text {
         width: 67%;
     }
@@ -112,7 +112,7 @@
     background-size: 15px 10px;
 }
 
-@media screen and (max-width: 650px){
+@media screen and (max-width: 1020px){
     .search__button {
         margin: auto 19px 0 auto;
     }

@@ -3,14 +3,14 @@
     height: 271px;
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 1250px){
     .card {
         width: 339px;
         height: 258px;
     }
 }
 
-@media screen and (max-width: 320px){
+@media screen and (max-width: 750px){
     .card {
         width: 300px;
         height: 236px;
@@ -19,18 +19,21 @@
 
 .card__description {
     height: 68px;
+    margin: 0 14px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
 .card__title {
+    margin: 14px 0 0 0;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
 }
 
 .card__film-name {
+    margin: 0 auto 9px 0;
     font-size: 15px;
     font-style: normal;
     font-weight: 500;
@@ -40,6 +43,7 @@
 }
 
 .card__film-duration {
+    margin: 0 auto auto 0;
     font-size: 11px;
     font-style: normal;
     font-weight: 400;
@@ -49,6 +53,7 @@
 }
 
 .card__save{
+    margin-top: 19px;
     background-color: #313131;
     width: 30px;
     height: 30px;
@@ -58,7 +63,6 @@
     background-image: url("../../images/unsaved-card.svg");
     background-position: 50% 50%;
     background-size: 10px 13px;
-
 }
 
 .card__save_active {
@@ -71,16 +75,16 @@
 }
 
 .card__photo {
-    height: 203px;
+    min-height: 203px;
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 1230px){
     .card__photo {
-        height: 190px;
+        min-height: 190px;
     }
 }
 
-@media screen and (max-width: 320px){
+@media screen and (max-width: 750px){
     .card__photo {
         height: 168px;
     }
