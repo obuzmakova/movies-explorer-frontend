@@ -48,17 +48,15 @@ function App() {
                     <Footer />
                 </Route>
                 <Route path="/profile">
+                    <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
+                            onOpenMenu={handleMenuPopupOpen}/>
                     <Profile />
                 </Route>
                 <Route path="/signin">
                     <Register />
-                    <Login />
-                    <Profile />
                 </Route>
                 <Route path="/signup">
-                    <Register />
                     <Login />
-                    <Profile />
                 </Route>
             </Switch>
 
