@@ -1,0 +1,87 @@
+.card {
+    width: 364px;
+    height: 271px;
+}
+
+@media screen and (max-width: 768px){
+    .card {
+        width: 339px;
+        height: 258px;
+    }
+}
+
+@media screen and (max-width: 320px){
+    .card {
+        width: 300px;
+        height: 236px;
+    }
+}
+
+.card__description {
+    height: 68px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.card__title {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.card__film-name {
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+    text-align: left;
+    color: white;
+}
+
+.card__film-duration {
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 13px;
+    text-align: left;
+    color: #8B8B8B;
+}
+
+.card__save{
+    background-color: #313131;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 34px;
+    background-repeat: no-repeat;
+    background-image: url("../../images/unsaved-card.svg");
+    background-position: 50% 50%;
+    background-size: 10px 13px;
+
+}
+
+.card__save_active {
+    background-image: url("../../images/card-save.svg");
+    background-color: #3DDC84;
+}
+
+.card__save:hover {
+    opacity: 0.8;
+}
+
+.card__photo {
+    height: 203px;
+}
+
+@media screen and (max-width: 768px){
+    .card__photo {
+        height: 190px;
+    }
+}
+
+@media screen and (max-width: 320px){
+    .card__photo {
+        height: 168px;
+    }
+}

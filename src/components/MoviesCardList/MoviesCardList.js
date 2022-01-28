@@ -6,10 +6,10 @@ function MoviesCardList(props) {
     return (
         <div className="content">
             <div className="content__elements">
-                <MoviesCard onCardSave={props.onCardSave}/>
-                <MoviesCard onCardSave={props.onCardSave}/>
-                <MoviesCard onCardSave={props.onCardSave}/>
-                <MoviesCard onCardSave={props.onCardSave}/>
+                <MoviesCard name="33 слова о дизайне" duration="1ч 47м"/>
+                <MoviesCard name="33 слова о дизайне" duration="1ч 47м"/>
+                <MoviesCard name="33 слова о дизайне" duration="1ч 47м"/>
+                <MoviesCard name="33 слова о дизайне" duration="1ч 47м"/>
             </div>
             <button className="content-more__button">Ещё</button>
         </div>
