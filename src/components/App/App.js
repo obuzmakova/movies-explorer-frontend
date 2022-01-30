@@ -10,6 +10,7 @@ import Login from '../Login/Login';
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import MenuPopup from "../MenuPopup/MenuPopup";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 function App() {
     const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
@@ -52,11 +53,14 @@ function App() {
                             onOpenMenu={handleMenuPopupOpen}/>
                     <Profile/>
                 </Route>
-                <Route path="/signin">
+                <Route path="/signup">
                     <Register />
                 </Route>
-                <Route path="/signup">
+                <Route path="/signin">
                     <Login />
+                </Route>
+                <Route path="/404">
+                    <ErrorPage />
                 </Route>
             </Switch>
 
