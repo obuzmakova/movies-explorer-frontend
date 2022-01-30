@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
@@ -50,7 +50,7 @@ function App() {
                 <Route path="/profile">
                     <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                             onOpenMenu={handleMenuPopupOpen}/>
-                    <Profile />
+                    <Profile/>
                 </Route>
                 <Route path="/signin">
                     <Register />
