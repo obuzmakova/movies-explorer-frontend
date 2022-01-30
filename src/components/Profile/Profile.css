@@ -2,6 +2,19 @@
     width: 32%;
     margin: 74px auto auto auto;
 }
+
+@media screen and (max-width: 768px){
+    .profile {
+        width: 53%;
+    }
+}
+
+@media screen and (max-width: 320px){
+    .profile {
+        width: 81%;
+    }
+}
+
 .profile__welcome {
     margin: 0 auto 123px auto;
     font-size: 24px;
@@ -53,22 +66,32 @@
     font-weight: 400;
     line-height: 16px;
     text-align: center;
-    margin: 220px auto 0 auto;
     width: 100%;
+}
+
+.profile__button:hover {
+    opacity: 0.8;
+}
+
+.profile__button-submit {
+    margin: 220px auto 0 auto;
     color: white;
     background-color: #202020;
     border: none;
 }
 
-.profile__exit-link {
-    font-size: 13px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 16px;
-    text-align: center;
+.profile__button-save {
+    margin: 220px auto 0 auto;
+    color: white;
+    background-color: #3456F3;
+    height: 45px;
+    border-radius: 3px;
+    border: none;
+}
+
+.profile__button-exit {
     margin: 16px auto 70px auto;
     color: #EE3465;
     text-decoration: none;
     display: inline-block;
-    width: 100%;
 }
