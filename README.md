@@ -1,4 +1,4 @@
-##Ссылка на макет
+## Ссылка на макет
 https://www.figma.com/file/ga81IPqKMwEZwsYMiIfkk1/Diploma-Buzmakova
 
 # Getting Started with Create React App
