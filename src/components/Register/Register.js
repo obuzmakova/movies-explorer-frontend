@@ -11,12 +11,10 @@ function Register() {
 
     return (
         <div className="register">
-            <div className="register__welcome-part">
-                <img alt="Логотип в виде зеленого круга с дыркой по центру" src={headerLogo}/>
-                <p className="register__welcome">
-                    Добро пожаловать!
-                </p>
-            </div>
+            <img alt="Логотип в виде зеленого круга с дыркой по центру" src={headerLogo} className="register__logo"/>
+            <p className="register__welcome">
+                Добро пожаловать!
+            </p>
             <form>
                 <div className="register__rows">
                     <label htmlFor="name">

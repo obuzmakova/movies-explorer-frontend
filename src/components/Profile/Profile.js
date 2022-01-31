@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import './Profile.css';
 
-function Profile(props) {
+function Profile() {
     const [data, setData] = useState({
         name: 'Ольга',
         email: 'olga@yandex.ru',
@@ -55,7 +55,6 @@ function Profile(props) {
                     <button type="submit" className="profile__button profile__button-save" onClick={handleSubmit}>Сохранить</button>
                 }
             </form>
-
             {data.disable ? <Link to="/signin" className="profile__button profile__button-exit">Выйти из аккаунта</Link> : null}
         </div>
     );
