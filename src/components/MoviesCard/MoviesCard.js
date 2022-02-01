@@ -19,7 +19,8 @@ function MoviesCard(props) {
                     <p className="card__film-name">{props.name}</p>
                     <p className="card__film-duration">{props.duration}</p>
                 </div>
-                <button type="button" onClick={handleCardSave} className={cardSaveButtonClassName}/>
+                {props.isSaved ? <button type="button" className="card__delete"/>
+                    : <button type="button" onClick={handleCardSave} className={cardSaveButtonClassName}/>}
             </div>
             <img className="card__photo" src={props.image} alt={props.name}/>
         </div>

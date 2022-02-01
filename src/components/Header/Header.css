@@ -34,6 +34,10 @@
     margin-right: 44px;
 }
 
+.header__logo:hover {
+    opacity: 0.8;
+}
+
 .header__link {
     margin: auto 16px auto 0;
     color: #FFFFFF;

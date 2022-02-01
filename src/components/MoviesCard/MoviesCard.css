@@ -74,6 +74,23 @@
     opacity: 0.8;
 }
 
+.card__delete {
+    margin-top: 19px;
+    background-color: #313131;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 34px;
+    background-repeat: no-repeat;
+    background-image: url("../../images/card-delete.svg");
+    background-position: 50% 50%;
+    background-size: 10px 13px;
+}
+
+.card__delete:hover {
+    opacity: 0.8;
+}
+
 .card__photo {
     width: auto;
     min-height: 203px;

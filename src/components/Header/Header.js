@@ -19,9 +19,9 @@ function Header(props) {
     if (props.filmText && width <= breakpoint) {
         return (
             <header className="header">
-                <div className="header__logo-nav">
+                <Link to="/movies" className="header__logo-nav">
                     <img className="header__logo" alt="Логотип в виде зеленого круга с дыркой по центру" src={headerLogo}/>
-                </div>
+                </Link>
                 <nav className="header__logo-nav">
                     {props.accountText ? <button className="header__account-logo" onClick={props.onOpenMenu}/> : null}
                 </nav>
@@ -31,7 +31,9 @@ function Header(props) {
         return (
             <header className="header">
                 <div className="header__logo-nav">
-                    <img className="header__logo" alt="Логотип в виде зеленого круга с дыркой по центру" src={headerLogo}/>
+                    <Link to="/movies">
+                        <img className="header__logo" alt="Логотип в виде зеленого круга с дыркой по центру" src={headerLogo}/>
+                    </Link>
                     {props.filmText ? <NavLink to="/movies" activeClassName="header__link_active"
                                                className="header__link">{props.filmText}</NavLink> : null}
                     {props.saveFilmText ? <NavLink to="/saved-movies" activeClassName="header__link_active"

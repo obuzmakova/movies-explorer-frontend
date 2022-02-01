@@ -6,7 +6,7 @@ function SavedMovies(props) {
     return (
         <div>
             <SearchForm isChecked={props.isChecked} handleChange={props.handleChange}/>
-            <MoviesCardList/>
+            <MoviesCardList isSaved={true}/>
         </div>
     );
 }
