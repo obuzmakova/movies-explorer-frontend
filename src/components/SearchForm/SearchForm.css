@@ -19,7 +19,7 @@
     }
 }
 
-@media screen and (max-width: 650px){
+@media screen and (max-width: 655px){
     .search {
         background-color: #202020;
         width: 94%;
@@ -43,7 +43,7 @@
     }
 }
 
-@media screen and (max-width: 650px){
+@media screen and (max-width: 655px){
     .search__area {
         background-color: #2F2F2F;
         flex-direction: row;
@@ -64,7 +64,7 @@
     margin: 0 10px 0 0;
 }
 
-@media screen and (max-width: 650px){
+@media screen and (max-width: 655px){
     .search__icon {
         width: 0;
         height: 0;
@@ -89,7 +89,7 @@
     }
 }
 
-@media screen and (max-width: 650px){
+@media screen and (max-width: 655px){
     .search__text {
         font-size: 14px;
         margin-left: 10px;

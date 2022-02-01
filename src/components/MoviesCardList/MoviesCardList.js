@@ -12,7 +12,7 @@ function MoviesCardList(props) {
                 <MoviesCard isSaved={props.isSaved} name="33 слова о дизайне" duration="1ч 47м" image={film}/>
                 <MoviesCard isSaved={props.isSaved} name="33 слова о дизайне" duration="1ч 47м" image={film}/>
             </div>
-            {props.isSaved ? null : <button className="content-more__button">Ещё</button>}
+            {props.isSaved ? null : <button className="content__more">Ещё</button>}
         </div>
     );
 }
