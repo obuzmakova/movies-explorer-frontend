@@ -35,6 +35,9 @@
         text-align: center;
     }
 }
+.register__logo:hover {
+    opacity: 0.8;
+}
 
 @media screen and (max-width: 320px){
     .register__logo {

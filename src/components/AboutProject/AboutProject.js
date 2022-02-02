@@ -14,8 +14,8 @@ function AboutProject() {
                 <p className="about__paragraph">У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было соблюдать, чтобы успешно защититься.</p>
             </div>
             <div className="about__graph">
-                <p className="about__period about__period_first">1 неделя</p>
-                <p className="about__period about__period-second">4 недели</p>
+                <p className="about__period">1 неделя</p>
+                <p className="about__period">4 недели</p>
                 <p className="about__description">Back-end</p>
                 <p className="about__description">Front-end</p>
             </div>

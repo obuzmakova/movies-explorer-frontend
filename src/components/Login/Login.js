@@ -6,7 +6,9 @@ import '../Register/Register.css';
 function Login() {
     return (
         <div className="register">
-            <img alt="Логотип в виде зеленого круга с дыркой по центру" src={headerLogo} className="register__logo"/>
+            <Link to="/">
+                <img alt="Логотип в виде зеленого круга с дыркой по центру" src={headerLogo} className="register__logo"/>
+            </Link>
             <p className="register__welcome">
                 Рады видеть!
             </p>
