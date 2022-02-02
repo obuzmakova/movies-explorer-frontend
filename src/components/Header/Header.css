@@ -1,0 +1,130 @@
+.header {
+    width: 89%;
+    margin: 0 auto;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 768px){
+    .header {
+        width: 92%;
+        padding-top: 18px;
+    }
+}
+
+@media screen and (max-width: 655px){
+    .header {
+        padding-bottom: 32px;
+    }
+}
+
+.header__logo-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 0;
+    padding: 0;
+}
+
+.header__logo {
+    margin-right: 44px;
+}
+
+.header__logo:hover {
+    opacity: 0.8;
+}
+
+.header__link {
+    margin: auto 16px auto 0;
+    color: #FFFFFF;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: right;
+    text-decoration: none;
+    background-color: #202020;
+    border: none;
+}
+
+.header__link:hover {
+    opacity: 0.7;
+}
+
+@media screen and (max-width: 655px){
+    .header__link {
+        margin: auto 0;
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 16px;
+    }
+}
+
+.header__link_active {
+    font-weight: 500;
+}
+
+.header__button {
+    margin: auto 0 auto 14px;
+    width: 76px;
+    height: 32px;
+    color: #202020;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 32px;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    background-color: #3DDC84;
+    border: none;
+    border-radius: 3px;
+}
+
+.header__button:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 655px){
+    .header__button {
+        width: 54px;
+        height: 26px;
+        line-height: 26px;
+        font-size: 10px;
+    }
+}
+
+.header__account-logo {
+    margin: auto 0;
+    padding: 19px 19px;
+    background-color: #313131;
+    border: none;
+    border-radius: 6px;
+    background-image: url("../../images/account-logo.svg");
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: 11px 11px;
+}
+
+.header__account-logo:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 768px){
+    .header__account-logo {
+        background-image: url("../../images/menu-header.svg");
+        background-color: #202020;
+        background-size: 44px 44px;
+        border-radius: 0;
+    }
+}
+
+@media screen and (max-width: 655px){
+    .header__account-logo {
+        background-size: 40px 43px;
+    }
+}

@@ -1,0 +1,138 @@
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    background: rgba(0, 0, 0, .3);
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: all ease-in-out 0.5s;
+}
+
+.popup_opened {
+    visibility: visible;
+    transition: all ease-in-out 0.5s;
+    opacity: 1;
+}
+
+.popup__container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 68%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(32, 32, 32, 1);
+}
+
+@media screen and (max-width: 320px){
+    .popup__container {
+        width: 100%;
+    }
+}
+
+.popup__close-button {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    width: 22px;
+    height: 22px;
+    background-image: url("../../images/close-button.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: unset;
+    cursor: pointer;
+    border: none;
+}
+
+.popup__close-button:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 320px){
+    .popup__close-button {
+        top: 13px;
+        right: 13px;
+    }
+}
+
+.popup__pages-nav {
+    margin: 159px auto 0 auto;
+    gap: 26px;
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 320px){
+    .popup__pages-nav {
+        margin-top: 144px;
+        gap: 24px;
+    }
+}
+
+.popup__link {
+    color: #FFFFFF;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    margin: 0 auto;
+    padding-bottom: 4px;
+}
+
+@media screen and (max-width: 320px){
+    .popup__link {
+        padding-bottom: 9px;
+    }
+}
+
+.popup__link:hover {
+    opacity: 0.7;
+}
+
+.popup__link-account {
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.popup__link_active {
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 2px solid #FFFFFF;
+}
+
+.popup__account-nav {
+    margin: auto auto 92px auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+@media screen and (max-width: 320px){
+    .popup__account-nav {
+        margin-bottom: 48px;
+    }
+}
+
+.popup__account-logo {
+    margin: auto 0 0 13px;
+    padding: 19px 19px;
+    background-color: #313131;
+    border: none;
+    border-radius: 6px;
+    background-image: url("../../images/account-logo.svg");
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: 11px 11px;
+}
+
+.popup__account-logo:hover {
+    opacity: 0.8;
+}

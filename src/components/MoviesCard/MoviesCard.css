@@ -1,0 +1,113 @@
+.card {
+    width: 364px;
+    height: 271px;
+    justify-self: center;
+    background-color: #222222;
+}
+
+@media screen and (max-width: 1250px){
+    .card {
+        width: 339px;
+        height: 258px;
+    }
+}
+
+@media screen and (max-width: 750px){
+    .card {
+        width: 300px;
+        height: 236px;
+    }
+}
+
+.card__description {
+    height: 68px;
+    margin: 0 14px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.card__title {
+    margin: 14px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.card__film-name {
+    margin: 0 auto 9px 0;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+    text-align: left;
+    color: white;
+}
+
+.card__film-duration {
+    margin: 0 auto auto 0;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 13px;
+    text-align: left;
+    color: #8B8B8B;
+}
+
+.card__save {
+    margin-top: 19px;
+    background-color: #313131;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 34px;
+    background-repeat: no-repeat;
+    background-image: url("../../images/unsaved-card.svg");
+    background-position: 50% 50%;
+    background-size: 10px 13px;
+}
+
+.card__save_active {
+    background-image: url("../../images/card-save.svg");
+    background-color: #3DDC84;
+}
+
+.card__save:hover {
+    opacity: 0.8;
+}
+
+.card__delete {
+    margin-top: 19px;
+    background-color: #313131;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 34px;
+    background-repeat: no-repeat;
+    background-image: url("../../images/card-delete.svg");
+    background-position: 50% 50%;
+    background-size: 10px 13px;
+}
+
+.card__delete:hover {
+    opacity: 0.8;
+}
+
+.card__photo {
+    width: auto;
+    min-height: 203px;
+}
+
+@media screen and (max-width: 1230px){
+    .card__photo {
+        min-height: 190px;
+    }
+}
+
+@media screen and (max-width: 750px){
+    .card__photo {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit:cover;
+    }
+}
