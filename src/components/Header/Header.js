@@ -19,7 +19,7 @@ function Header(props) {
     if (props.filmText && width <= breakpoint) {
         return (
             <header className="header">
-                <Link to="/movies" className="header__logo-nav">
+                <Link to="/" className="header__logo-nav">
                     <img className="header__logo" alt="Логотип в виде зеленого круга с дыркой по центру" src={headerLogo}/>
                 </Link>
                 <nav className="header__logo-nav">
@@ -31,7 +31,7 @@ function Header(props) {
         return (
             <header className="header">
                 <div className="header__logo-nav">
-                    <Link to="/movies">
+                    <Link to="/">
                         <img className="header__logo" alt="Логотип в виде зеленого круга с дыркой по центру" src={headerLogo}/>
                     </Link>
                     {props.filmText ? <NavLink to="/movies" activeClassName="header__link_active"
