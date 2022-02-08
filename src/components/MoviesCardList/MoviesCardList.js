@@ -3,10 +3,16 @@ import './MoviesCardList.css';
 import MoviesCard from "../MoviesCard/MoviesCard";
 
 function MoviesCardList(props) {
-    const [showMovies, setShowMovies] = useState(6);
+    const breakpointMiddle = 768;
+    const width = window.innerWidth;
+    const [showMovies, setShowMovies] = useState((width > breakpointMiddle) ? 12 : ((width === breakpointMiddle) ? 8 : 5));
 
     function handleShow() {
-        setShowMovies(Math.min(props.movies.length, showMovies + 6));
+        if (width > breakpointMiddle) {
+            setShowMovies(Math.min(props.movies.length, showMovies + 3));
+        } else {
+            setShowMovies(Math.min(props.movies.length, showMovies + 2));
+        }
     }
 
     return (

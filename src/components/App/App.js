@@ -19,6 +19,8 @@ function App() {
     const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
     const [isCheckboxState, setCheckboxState] = useState(true);
     const [movies, setMovies] = useState([]);
+    const [preload, setPreload] = useState(false);
+    const [fail, setFail] = useState('');
 
     function handleMenuPopupOpen() {
         setMenuPopupOpen(true);
@@ -33,9 +35,11 @@ function App() {
     }
 
     function handleSearch() {
+        setPreload(true);
         api.getInitialMovies()
             .then((movies) => {
                 setMovies(movies);
+                setPreload(false);
         });
     }
 
@@ -46,10 +50,10 @@ function App() {
                     history.push("/signin");
                 }
                 else {
-                    // handleFail();
+                    setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз");
                 }
             })
-            // .catch(handleFail)
+            .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
     }
 
     return (
@@ -63,7 +67,8 @@ function App() {
                 <Route path="/movies">
                     <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                             onOpenMenu={handleMenuPopupOpen}/>
-                    <Movies movies={movies} isChecked={isCheckboxState} handleChange={handleCheckboxState} handleSearch={handleSearch}/>
+                    <Movies preload={preload} fail={fail} movies={movies} isChecked={isCheckboxState}
+                            handleChange={handleCheckboxState} handleSearch={handleSearch}/>
                     <Footer />
                 </Route>
                 <Route path="/saved-movies">
