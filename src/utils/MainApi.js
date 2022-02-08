@@ -1,4 +1,4 @@
-export const MAIN_URL = 'http://cinema.nomoredomains.club';
+export const MAIN_URL = 'https://cinema.nomoredomains.club';
 
 const checkResponse = (res) => {
     debugger;
