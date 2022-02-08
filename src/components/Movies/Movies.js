@@ -6,7 +6,7 @@ import SearchForm from "../SearchForm/SearchForm";
 function Movies(props) {
     return (
         <div>
-            <SearchForm isChecked={props.isChecked} handleChange={props.handleChange}/>
+            <SearchForm isChecked={props.isChecked} handleChange={props.handleChange} handleSearch={props.handleSearch}/>
             <MoviesCardList/>
         </div>
     );

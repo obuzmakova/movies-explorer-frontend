@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -11,8 +11,11 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import MenuPopup from "../MenuPopup/MenuPopup";
 import ErrorPage from "../ErrorPage/ErrorPage";
+import * as api from '../../utils/MoviesApi';
+import * as main from '../../utils/MainApi';
 
 function App() {
+    const history = useHistory();
     const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
     const [isCheckboxState, setCheckboxState] = useState(true);
 
@@ -28,6 +31,28 @@ function App() {
         setCheckboxState(!isCheckboxState);
     }
 
+    function handleSearch() {
+        api.getInitialMovies()
+            .then((movies) => {
+            debugger;
+        });
+    }
+
+    function handleRegister({email, password, name}) {
+        debugger;
+        main.register(email, password, name)
+            .then((data) => {
+                debugger;
+                if (data) {
+                    history.push("/signin");
+                }
+                else {
+                    // handleFail();
+                }
+            })
+            // .catch(handleFail)
+    }
+
     return (
         <div className="app">
             <Switch>
@@ -39,7 +64,7 @@ function App() {
                 <Route path="/movies">
                     <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                             onOpenMenu={handleMenuPopupOpen}/>
-                    <Movies isChecked={isCheckboxState} handleChange={handleCheckboxState}/>
+                    <Movies isChecked={isCheckboxState} handleChange={handleCheckboxState} handleSearch={handleSearch}/>
                     <Footer />
                 </Route>
                 <Route path="/saved-movies">
@@ -54,7 +79,7 @@ function App() {
                     <Profile/>
                 </Route>
                 <Route path="/signup">
-                    <Register />
+                    <Register handleRegister={handleRegister}/>
                 </Route>
                 <Route path="/signin">
                     <Login />
