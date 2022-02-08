@@ -21,7 +21,6 @@ function Register(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        debugger;
         const {email, password, name} = data;
         props.handleRegister({email, password, name});
     }

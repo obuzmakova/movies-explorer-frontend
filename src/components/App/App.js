@@ -34,15 +34,12 @@ function App() {
     function handleSearch() {
         api.getInitialMovies()
             .then((movies) => {
-            debugger;
         });
     }
 
     function handleRegister({email, password, name}) {
-        debugger;
         main.register(email, password, name)
             .then((data) => {
-                debugger;
                 if (data) {
                     history.push("/signin");
                 }

@@ -1,7 +1,6 @@
-export const MAIN_URL = 'https://cinema.nomoredomains.club';
+export const MAIN_URL = 'http://cinema.nomoredomains.club';
 
 const checkResponse = (res) => {
-    debugger;
     if (res.ok) {
         return res.json();
     }
@@ -85,7 +84,6 @@ export const deleteMovie = (moviesId, jwt) => {
 }
 
 export const register = (email, password, name) => {
-    debugger
     return fetch(`${MAIN_URL}/signup`, {
         method: 'POST',
         headers: {
