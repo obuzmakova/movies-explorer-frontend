@@ -8,7 +8,7 @@ function MoviesCardList(props) {
     const [showMovies, setShowMovies] = useState((width > breakpointMiddle) ? 12 : ((width === breakpointMiddle) ? 8 : 5));
 
     function handleShow() {
-        if (width > breakpointMiddle) {
+        if (window.innerWidth > breakpointMiddle) {
             setShowMovies(Math.min(props.movies.length, showMovies + 3));
         } else {
             setShowMovies(Math.min(props.movies.length, showMovies + 2));
