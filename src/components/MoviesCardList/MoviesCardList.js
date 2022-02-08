@@ -1,18 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './MoviesCardList.css';
 import MoviesCard from "../MoviesCard/MoviesCard";
-import film from "../../images/film.jpg"
 
 function MoviesCardList(props) {
+    const [showMovies, setShowMovies] = useState(6);
+
+    function handleShow() {
+        setShowMovies(Math.min(props.movies.length, showMovies + 6));
+    }
+
     return (
         <div className="content">
             <div className="content__elements">
-                <MoviesCard isSaved={props.isSaved} name="33 слова о дизайне" duration="1ч 47м" image={film}/>
-                <MoviesCard isSaved={props.isSaved} name="33 слова о дизайне" duration="1ч 47м" image={film}/>
-                <MoviesCard isSaved={props.isSaved} name="33 слова о дизайне" duration="1ч 47м" image={film}/>
-                <MoviesCard isSaved={props.isSaved} name="33 слова о дизайне" duration="1ч 47м" image={film}/>
+                {(props.movies).slice(0, showMovies).map((movie) => (<MoviesCard key={movie.id} isSaved={props.isSaved} name={movie.nameRU}
+                                                          duration={movie.duration}
+                                                          image={`https://api.nomoreparties.co/` + movie.image.url}/>))}
             </div>
-            {props.isSaved ? null : <button className="content__more">Ещё</button>}
+            {!props.isSaved && props.movies.length > showMovies ?
+                <button className="content__more" onClick={handleShow}>Ещё</button> : null}
         </div>
     );
 }

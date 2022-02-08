@@ -18,6 +18,7 @@ function App() {
     const history = useHistory();
     const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
     const [isCheckboxState, setCheckboxState] = useState(true);
+    const [movies, setMovies] = useState([]);
 
     function handleMenuPopupOpen() {
         setMenuPopupOpen(true);
@@ -34,6 +35,7 @@ function App() {
     function handleSearch() {
         api.getInitialMovies()
             .then((movies) => {
+                setMovies(movies);
         });
     }
 
@@ -61,7 +63,7 @@ function App() {
                 <Route path="/movies">
                     <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                             onOpenMenu={handleMenuPopupOpen}/>
-                    <Movies isChecked={isCheckboxState} handleChange={handleCheckboxState} handleSearch={handleSearch}/>
+                    <Movies movies={movies} isChecked={isCheckboxState} handleChange={handleCheckboxState} handleSearch={handleSearch}/>
                     <Footer />
                 </Route>
                 <Route path="/saved-movies">
