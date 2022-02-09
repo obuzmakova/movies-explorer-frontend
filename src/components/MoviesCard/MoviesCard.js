@@ -6,6 +6,7 @@ function MoviesCard(props) {
 
     function handleCardSave() {
         setCardSaved(!savedCard);
+        props.handleSave(props.movie);
     }
 
     function checkDuration(duration) {
@@ -25,19 +26,21 @@ function MoviesCard(props) {
         `card__save ${savedCard ? 'card__save_active' : 'card__save'}`
     );
 
-    const calcDuration = checkDuration(props.duration);
+    const calcDuration = checkDuration(props.movie.duration);
 
     return (
         <div className="card">
             <div className="card__description">
-                <div className="card__title">
-                    <p className="card__film-name">{props.name}</p>
+                <a className="card__title" href={props.movie.trailerLink} target="_blank">
+                    <p className="card__film-name">{props.movie.nameRU}</p>
                     <p className="card__film-duration">{calcDuration}</p>
-                </div>
+                </a>
                 {props.isSaved ? <button type="button" className="card__delete"/>
                     : <button type="button" onClick={handleCardSave} className={cardSaveButtonClassName}/>}
             </div>
-            <img className="card__photo" src={props.image} alt={props.name}/>
+            <a href={props.movie.trailerLink} target="_blank">
+                <img className="card__photo" src={`https://api.nomoreparties.co/` + props.movie.image.url} alt={props.movie.nameRU}/>
+            </a>
         </div>
     );
 }

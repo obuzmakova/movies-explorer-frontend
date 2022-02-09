@@ -8,7 +8,7 @@ function Movies(props) {
     return (
         <div>
             <SearchForm isChecked={props.isChecked} handleChange={props.handleChange} handleSearch={props.handleSearch}/>
-            <MoviesCardList movies={props.movies}/>
+            <MoviesCardList movies={props.movies} handleSave={props.handleSave}/>
             {props.preload ? <Preloader/> : null}
             {props.fail ? <p>{props.fail}</p> : null}
         </div>
