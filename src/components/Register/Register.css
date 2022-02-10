@@ -74,6 +74,15 @@ form label {
     color: #2F2F2F;
 }
 
+.register__error {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    color: red;
+    margin: 0 auto;
+}
+
 .register__button {
     width: 100%;
     margin: 91px auto 0 auto;
@@ -97,6 +106,14 @@ form label {
 
 .register__button:hover {
     opacity: 0.8;
+}
+
+.register__button_inactive {
+    opacity: 0.5;
+}
+
+.register__button_inactive:hover {
+    opacity: 0.5;
 }
 
 .register__signin {

@@ -61,7 +61,10 @@ function App() {
     function handleRegister({email, password, name}) {
         main.register(email, password, name)
             .then((data) => {
-                history.push("/signin");
+                debugger;
+                localStorage.setItem('jwt', data.token);
+                setLoggedIn(true);
+                history.push("/movies");
             })
             .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
     }
