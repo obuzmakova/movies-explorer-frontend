@@ -30,8 +30,12 @@ function Register(props) {
 
         if (name === "name" && regexName.test(value)) {
             setErrors ({
-                ...data,
+                ...errors,
                 [name]: "Имя может содержать только латиницу, кириллицу, пробел или дефис"
+            })
+            setData({
+                ...data,
+                [name]: value
             })
             return;
         }
