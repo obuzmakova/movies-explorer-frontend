@@ -24,6 +24,7 @@ function App() {
     const [fail, setFail] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
+    const [userData, setUserData] = useState({ name: '', email: ''});
 
     function handleMenuPopupOpen() {
         setMenuPopupOpen(true);
@@ -48,27 +49,57 @@ function App() {
             .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
     }
 
+    function loadUserData(jwt) {
+        main.getUserInfo(jwt)
+            .then((data) => {
+                setUserData({
+                    name: data.name,
+                    email: data.email
+                });
+            })
+    }
+
     function handleLogin({email, password}) {
+        setFail('');
         main.authorize(email, password)
             .then((data) => {
                 localStorage.setItem('jwt', data.token);
                 setLoggedIn(true);
                 history.push("/movies");
             })
-            .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
+            .then(() => {
+                loadUserData(localStorage.getItem('jwt'));
+            })
+            .catch((data) => {
+                if (data === 401) {
+                    setFail("Указан неверный логин или пароль");
+                } else {
+                    setFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
+                }
+            })
     }
 
     function handleRegister({email, password, name}) {
+        setFail('');
         main.register(email, password, name)
             .then(() => {
                 handleLogin({email, password});
             })
-            .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
+            .catch((data) => {
+                if (data === 409) {
+                    setFail("Пользователь с указанным email уже зарегистрирован");
+                } else {
+                    setFail("Во время регистрации произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
+                }
+            });
     }
 
     function handleSaveMovie(movie) {
-        main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description, movie.image.url, movie.trailerLink,
-            movie.nameRU, movie.nameEN, movie.image.url, movie.id)
+        const jwt = localStorage.getItem('jwt');
+
+        main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description,
+            `https://api.nomoreparties.co/` + movie.image.url, movie.trailerLink,
+            movie.nameRU, movie.nameEN, `https://api.nomoreparties.co/` + movie.image.url, movie.id, jwt)
             .then((data) => {
                 debugger;
             })
@@ -99,10 +130,10 @@ function App() {
                     <Route path="/profile">
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <Profile/>
+                        <Profile name={userData.name} email={userData.email}/>
                     </Route>
                     <Route path="/signup">
-                        <Register handleRegister={handleRegister}/>
+                        <Register fail={fail} handleRegister={handleRegister}/>
                     </Route>
                     <Route path="/signin">
                         <Login handleLogin={handleLogin}/>

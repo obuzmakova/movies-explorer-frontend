@@ -8,6 +8,11 @@ function Login(props) {
         email: '',
         password: ''
     })
+    const [errors, setErrors] = useState({
+        email: '',
+        password: ''
+    });
+    const [isValid, setIsValid] = React.useState(false);
 
     function handleChange(e) {
         const {name, value} = e.target;
@@ -16,6 +21,11 @@ function Login(props) {
             ...data,
             [name]: value
         })
+        setErrors({
+            ...errors,
+            [name]: e.target.validationMessage
+        });
+        setIsValid(e.target.closest("form").checkValidity());
     }
 
     function handleSubmit(e) {
@@ -38,12 +48,15 @@ function Login(props) {
                         E-mail
                     </label>
                     <input id="email" name="email" type="email" className="register__text" onChange={handleChange}/>
+                    {errors.email ? <span className="register__error">{errors.email}</span> : null}
                     <label htmlFor="password">
                         Пароль
                     </label>
                     <input id="password" name="password" type="password" className="register__text" onChange={handleChange}/>
+                    {props.fail ? <span className="register__error">{props.fail}</span> : null}
                 </div>
-                <button type="submit" className="register__button">Войти</button>
+                <button type="submit" className={isValid ? "register__button" : "register__button " +
+                    "register__button_inactive"}>Войти</button>
             </form>
 
             <div className="register__signin">

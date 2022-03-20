@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import './Profile.css';
 
-function Profile() {
+function Profile(props) {
     const [data, setData] = useState({
-        name: 'Ольга',
-        email: 'olga@yandex.ru',
+        name: props.name,
+        email: props.email,
         disable: true
     })
 
