@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import './Register.css';
 import headerLogo from "../../images/header-logo.svg";
@@ -15,14 +15,6 @@ function Register(props) {
         name: ''
     });
     const [isValid, setIsValid] = React.useState(false);
-    const resetForm = useCallback(
-        (newValues = {}, newErrors = {}, newIsValid = false) => {
-            setData(newValues);
-            setErrors(newErrors);
-            setIsValid(newIsValid);
-        },
-        [setData, setErrors, setIsValid]
-    );
 
     function handleChange(e) {
         const {name, value} = e.target;
@@ -83,6 +75,7 @@ function Register(props) {
                     </label>
                     <input id="password" name="password" type="password" className="register__text" onChange={handleChange}
                            value={data.password} required/>
+                    {props.fail ? <span className="register__error">{props.fail}</span> : null}
                 </div>
                 <button type="submit" className={isValid ? "register__button" : "register__button " +
                     "register__button_inactive"}>Зарегистрироваться</button>

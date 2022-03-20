@@ -136,7 +136,7 @@ function App() {
                         <Register fail={fail} handleRegister={handleRegister}/>
                     </Route>
                     <Route path="/signin">
-                        <Login handleLogin={handleLogin}/>
+                        <Login fail={fail} handleLogin={handleLogin}/>
                     </Route>
                     <Route path="/404">
                         <ErrorPage />
