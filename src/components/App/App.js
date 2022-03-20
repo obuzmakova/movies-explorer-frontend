@@ -22,6 +22,8 @@ function App() {
     const [movies, setMovies] = useState(JSON.parse(localStorage.getItem('allMovies')) || []);
     const [preload, setPreload] = useState(false);
     const [fail, setFail] = useState('');
+    const [loginFail, setLoginFail] = useState('');
+    const [registerFail, setRegisterFail] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
     const [userData, setUserData] = useState({ name: '', email: ''});
@@ -72,9 +74,9 @@ function App() {
             })
             .catch((data) => {
                 if (data === 401) {
-                    setFail("Указан неверный логин или пароль");
+                    setLoginFail("Указан неверный логин или пароль");
                 } else {
-                    setFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
+                    setLoginFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
                 }
             })
     }
@@ -87,9 +89,9 @@ function App() {
             })
             .catch((data) => {
                 if (data === 409) {
-                    setFail("Пользователь с указанным email уже зарегистрирован");
+                    setRegisterFail("Пользователь с указанным email уже зарегистрирован");
                 } else {
-                    setFail("Во время регистрации произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
+                    setRegisterFail("Во время регистрации произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
                 }
             });
     }
@@ -133,10 +135,10 @@ function App() {
                         <Profile name={userData.name} email={userData.email}/>
                     </Route>
                     <Route path="/signup">
-                        <Register fail={fail} handleRegister={handleRegister}/>
+                        <Register fail={registerFail} setRegisterFail={setRegisterFail} handleRegister={handleRegister}/>
                     </Route>
                     <Route path="/signin">
-                        <Login fail={fail} handleLogin={handleLogin}/>
+                        <Login fail={loginFail} setLoginFail={setLoginFail} handleLogin={handleLogin}/>
                     </Route>
                     <Route path="/404">
                         <ErrorPage />

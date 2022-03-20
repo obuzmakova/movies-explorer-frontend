@@ -20,6 +20,7 @@ function Register(props) {
         const {name, value} = e.target;
         const regexName = /[^-\wа-я\sё]/gi;
 
+        props.setRegisterFail('');
         if (name === "name" && regexName.test(value)) {
             setErrors ({
                 ...errors,
@@ -75,6 +76,7 @@ function Register(props) {
                     </label>
                     <input id="password" name="password" type="password" className="register__text" onChange={handleChange}
                            value={data.password} required/>
+                    {errors.password ? <span className="register__error">{errors.password}</span> : null}
                     {props.fail ? <span className="register__error">{props.fail}</span> : null}
                 </div>
                 <button type="submit" className={isValid ? "register__button" : "register__button " +

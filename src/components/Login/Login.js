@@ -17,6 +17,7 @@ function Login(props) {
     function handleChange(e) {
         const {name, value} = e.target;
 
+        props.setLoginFail('');
         setData({
             ...data,
             [name]: value
@@ -47,15 +48,16 @@ function Login(props) {
                     <label htmlFor="email">
                         E-mail
                     </label>
-                    <input id="email" name="email" type="email" className="register__text" onChange={handleChange}/>
+                    <input id="email" name="email" type="email" className="register__text" onChange={handleChange} required/>
                     {errors.email ? <span className="register__error">{errors.email}</span> : null}
                     <label htmlFor="password">
                         Пароль
                     </label>
-                    <input id="password" name="password" type="password" className="register__text" onChange={handleChange}/>
+                    <input id="password" name="password" type="password" className="register__text" onChange={handleChange} required/>
+                    {errors.password ? <span className="register__error">{errors.password}</span> : null}
                     {props.fail ? <span className="register__error">{props.fail}</span> : null}
                 </div>
-                <button type="submit" className={isValid ? "register__button" : "register__button " +
+                <button type={isValid ? "submit" : null} className={isValid ? "register__button" : "register__button " +
                     "register__button_inactive"}>Войти</button>
             </form>
 
