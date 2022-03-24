@@ -25,8 +25,7 @@ function App() {
     const [loginFail, setLoginFail] = useState('');
     const [registerFail, setRegisterFail] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
-    const [currentUser, setCurrentUser] = useState({});
-    const [userData, setUserData] = useState({ name: '', email: ''});
+    const [currentUser, setCurrentUser] = useState({ name: '', email: ''});
 
     function handleMenuPopupOpen() {
         setMenuPopupOpen(true);
@@ -54,7 +53,19 @@ function App() {
     function loadUserData(jwt) {
         main.getUserInfo(jwt)
             .then((data) => {
-                setUserData({
+                setCurrentUser({
+                    name: data.name,
+                    email: data.email
+                });
+            })
+    }
+
+    function handleUpdate({name, email}) {
+        const jwt = localStorage.getItem('jwt');
+
+        main.updateUserInfo(name, email, jwt)
+            .then((data) => {
+                setCurrentUser({
                     name: data.name,
                     email: data.email
                 });
@@ -62,7 +73,7 @@ function App() {
     }
 
     function handleLogin({email, password}) {
-        setFail('');
+        setRegisterFail('');
         main.authorize(email, password)
             .then((data) => {
                 localStorage.setItem('jwt', data.token);
@@ -82,7 +93,7 @@ function App() {
     }
 
     function handleRegister({email, password, name}) {
-        setFail('');
+        setLoginFail('');
         main.register(email, password, name)
             .then(() => {
                 handleLogin({email, password});
@@ -132,7 +143,7 @@ function App() {
                     <Route path="/profile">
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <Profile name={userData.name} email={userData.email}/>
+                        <Profile name={currentUser.name} email={currentUser.email} hangleUpdate={handleUpdate}/>
                     </Route>
                     <Route path="/signup">
                         <Register fail={registerFail} setRegisterFail={setRegisterFail} handleRegister={handleRegister}/>

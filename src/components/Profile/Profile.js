@@ -9,6 +9,24 @@ function Profile(props) {
         disable: true
     })
 
+    const [errors, setErrors] = useState({
+        name: '',
+        email: ''
+    });
+
+    function handleChange(e) {
+        const {name, value} = e.target;
+
+        setData({
+            ...data,
+            [name]: value
+        })
+        setErrors({
+            ...errors,
+            [name]: e.target.validationMessage
+        });
+    }
+
     function handleEdit(e) {
         e.preventDefault();
 
@@ -25,6 +43,8 @@ function Profile(props) {
             ...data,
             ['disable']: true
         })
+        const {name, email} = data;
+        props.hangleUpdate({name, email})
     }
 
     return (
@@ -39,7 +59,7 @@ function Profile(props) {
                             Имя
                         </label>
                         <input id="name" name="name" type="text" className="profile__text"
-                               value={data.name} disabled={data.disable}/>
+                               value={data.name} disabled={data.disable} onChange={handleChange}/>
                     </div>
                     <div className="profile__line"/>
                     <div className="profile__row">
@@ -47,7 +67,7 @@ function Profile(props) {
                             E-mail
                         </label>
                         <input id="email" name="email" type="email" className="profile__text"
-                               value={data.email} disabled={data.disable}/>
+                               value={data.email} disabled={data.disable} onChange={handleChange}/>
                     </div>
                 </div>
                 {data.disable ? <button type="submit" className="profile__button profile__button-submit"
