@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { Route, Switch, useHistory } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
@@ -26,6 +27,16 @@ function App() {
     const [registerFail, setRegisterFail] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
     const [currentUser, setCurrentUser] = useState({ name: '', email: ''});
+
+
+    function handleLogout() {
+        setCurrentUser({
+            name: '',
+            email: ''
+        });
+        setLoggedIn(false);
+        localStorage.removeItem('jwt');
+    }
 
     function handleMenuPopupOpen() {
         setMenuPopupOpen(true);
@@ -82,6 +93,7 @@ function App() {
             })
             .then(() => {
                 loadUserData(localStorage.getItem('jwt'));
+                handleSearch();
             })
             .catch((data) => {
                 if (data === 401) {
@@ -127,24 +139,24 @@ function App() {
                         <Main />
                         <Footer />
                     </Route>
-                    <Route path="/movies">
+                    <ProtectedRoute path="/movies" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <Movies preload={preload} fail={fail} movies={movies} isChecked={isCheckboxState}
                                 handleChange={handleCheckboxState} handleSearch={handleSearch} handleSave={handleSaveMovie}/>
                         <Footer />
-                    </Route>
-                    <Route path="/saved-movies">
+                    </ProtectedRoute>
+                    <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <SavedMovies isChecked={isCheckboxState} handleChange={handleCheckboxState}/>
                         <Footer />
-                    </Route>
-                    <Route path="/profile">
+                    </ProtectedRoute>
+                    <ProtectedRoute path="/profile" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <Profile name={currentUser.name} email={currentUser.email} hangleUpdate={handleUpdate}/>
-                    </Route>
+                        <Profile name={currentUser.name} email={currentUser.email} hangleUpdate={handleUpdate} handleLogout={handleLogout}/>
+                    </ProtectedRoute>
                     <Route path="/signup">
                         <Register fail={registerFail} setRegisterFail={setRegisterFail} handleRegister={handleRegister}/>
                     </Route>

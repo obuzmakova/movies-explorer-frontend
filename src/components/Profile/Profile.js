@@ -75,7 +75,7 @@ function Profile(props) {
                     <button type="submit" className="profile__button profile__button-save" onClick={handleSubmit}>Сохранить</button>
                 }
             </form>
-            {data.disable ? <Link to="/signin" className="profile__button profile__button-exit">Выйти из аккаунта</Link> : null}
+            {data.disable ? <Link to="/signin" className="profile__button profile__button-exit" onClick={props.handleLogout}>Выйти из аккаунта</Link> : null}
         </div>
     );
 }
