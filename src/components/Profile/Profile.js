@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import './Profile.css';
+import '../Register/Register.css';
 
 function Profile(props) {
     const [data, setData] = useState({
@@ -69,6 +70,8 @@ function Profile(props) {
                         <input id="email" name="email" type="email" className="profile__text"
                                value={data.email} disabled={data.disable} onChange={handleChange}/>
                     </div>
+                    {props.updateFail ? <span className="register__error">{props.updateFail}</span> : null}
+                    {props.updateStatus ? <span className="profile__success">{props.updateStatus}</span> : null}
                 </div>
                 {data.disable ? <button type="submit" className="profile__button profile__button-submit"
                                         onClick={handleEdit}>Редактировать</button> :

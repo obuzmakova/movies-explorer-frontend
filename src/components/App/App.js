@@ -27,7 +27,9 @@ function App() {
     const [registerFail, setRegisterFail] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
     const [currentUser, setCurrentUser] = useState({ name: '', email: ''});
-
+    const [saved, setSaved] = useState(false);
+    const [updateFail, setUpdateFail] = useState('');
+    const [updateStatus, setUpdateStatus] = useState('');
 
     function handleLogout() {
         setCurrentUser({
@@ -50,15 +52,29 @@ function App() {
         setCheckboxState(!isCheckboxState);
     }
 
-    function handleSearch() {
+    function handleLoad() {
         setPreload(true);
         api.getInitialMovies()
             .then((movies) => {
                 localStorage.setItem('allMovies', JSON.stringify(movies));
                 setMovies(movies);
                 setPreload(false);
-        })
+            })
             .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
+    }
+
+    function handleSearch(value) {
+        setPreload(true);
+
+        const allMovies = localStorage.getItem('allMovies');
+        debugger;
+        // api.getInitialMovies()
+        //     .then((movies) => {
+        //         localStorage.setItem('allMovies', JSON.stringify(movies));
+        //         setMovies(movies);
+        //         setPreload(false);
+        // })
+        //     .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
     }
 
     function loadUserData(jwt) {
@@ -80,6 +96,10 @@ function App() {
                     name: data.name,
                     email: data.email
                 });
+                setUpdateStatus("Данные успешно обновлены");
+            })
+            .catch(() => {
+                setUpdateFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз");
             })
     }
 
@@ -93,7 +113,7 @@ function App() {
             })
             .then(() => {
                 loadUserData(localStorage.getItem('jwt'));
-                handleSearch();
+                handleLoad();
             })
             .catch((data) => {
                 if (data === 401) {
@@ -126,7 +146,11 @@ function App() {
             `https://api.nomoreparties.co/` + movie.image.url, movie.trailerLink,
             movie.nameRU, movie.nameEN, `https://api.nomoreparties.co/` + movie.image.url, movie.id, jwt)
             .then((data) => {
+                main.getUserMovies(jwt)
+            })
+            .then((data) => {
                 debugger;
+                setSaved(true);
             })
     }
 
@@ -149,13 +173,14 @@ function App() {
                     <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <SavedMovies isChecked={isCheckboxState} handleChange={handleCheckboxState}/>
+                        <SavedMovies hasSaved={saved} isChecked={isCheckboxState} handleSearch={handleSearch} handleChange={handleCheckboxState}/>
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute path="/profile" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <Profile name={currentUser.name} email={currentUser.email} hangleUpdate={handleUpdate} handleLogout={handleLogout}/>
+                        <Profile name={currentUser.name} email={currentUser.email} hangleUpdate={handleUpdate}
+                                 updateFail={updateFail} updateStatus={updateStatus} handleLogout={handleLogout}/>
                     </ProtectedRoute>
                     <Route path="/signup">
                         <Register fail={registerFail} setRegisterFail={setRegisterFail} handleRegister={handleRegister}/>
@@ -163,7 +188,7 @@ function App() {
                     <Route path="/signin">
                         <Login fail={loginFail} setLoginFail={setLoginFail} handleLogin={handleLogin}/>
                     </Route>
-                    <Route path="/404">
+                    <Route>
                         <ErrorPage />
                     </Route>
                 </Switch>

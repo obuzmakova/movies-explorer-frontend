@@ -36,6 +36,7 @@ export const updateUserInfo = (newName, newEmail, jwt) => {
 
 export const getUserMovies = (jwt) => {
     return fetch(`${MAIN_URL}/movies`, {
+        method: 'GET',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

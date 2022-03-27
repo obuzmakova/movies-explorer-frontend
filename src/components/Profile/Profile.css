@@ -95,3 +95,13 @@
     text-decoration: none;
     display: inline-block;
 }
+
+.profile__success {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    color: green;
+    margin: 0 auto;
+    padding-top: 2px;
+}
