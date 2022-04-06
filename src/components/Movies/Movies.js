@@ -7,7 +7,8 @@ import Preloader from '../Preloader/Preloader';
 function Movies(props) {
     return (
         <div>
-            <SearchForm isChecked={props.isChecked} handleChange={props.handleChange} handleSearch={props.handleSearch}/>
+            <SearchForm isChecked={props.isChecked} handleChange={props.handleChange} handleSearch={props.handleSearch} error={props.error}
+                        clearAllError={props.clearAllError}/>
             <MoviesCardList movies={props.movies} handleSave={props.handleSave}/>
             {props.preload ? <Preloader/> : null}
             {props.fail ? <p>{props.fail}</p> : null}

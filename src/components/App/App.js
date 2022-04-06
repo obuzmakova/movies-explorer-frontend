@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { Route, Switch, useHistory } from 'react-router-dom';
 import './App.css';
@@ -30,6 +30,30 @@ function App() {
     const [saved, setSaved] = useState(false);
     const [updateFail, setUpdateFail] = useState('');
     const [updateStatus, setUpdateStatus] = useState('');
+    const [searchError, setSearchError] = useState('');
+
+    useEffect(() => {
+        checkToken();
+    }, []);
+
+    function checkToken() {
+        const jwt = localStorage.getItem('jwt');
+
+        if (jwt) {
+            main.checkToken(jwt)
+                .then(data => {
+                    setCurrentUser({
+                        name: data.name,
+                        email: data.email,
+                    });
+                    setLoggedIn(true);
+                    history.push("/movies");
+                })
+                .catch(() => setLoginFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
+        } else {
+            setLoggedIn(false);
+        }
+    }
 
     function handleLogout() {
         setCurrentUser({
@@ -49,7 +73,14 @@ function App() {
     }
 
     function handleCheckboxState() {
+        // setPreload(true);
         setCheckboxState(!isCheckboxState);
+        //
+        // if (!isCheckboxState) {
+        //     debugger
+        // } else {
+        //     debugger
+        // }
     }
 
     function handleLoad() {
@@ -65,16 +96,27 @@ function App() {
 
     function handleSearch(value) {
         setPreload(true);
+        const searchValue = value.toLowerCase();
+        const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+        const result = [];
 
-        const allMovies = localStorage.getItem('allMovies');
-        debugger;
-        // api.getInitialMovies()
-        //     .then((movies) => {
-        //         localStorage.setItem('allMovies', JSON.stringify(movies));
-        //         setMovies(movies);
-        //         setPreload(false);
-        // })
-        //     .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
+        allMovies.forEach((movie) => {
+            if (movie.nameRU && movie.nameRU.toLowerCase().indexOf(searchValue) > -1) {
+                result.push(movie);
+            } else if (movie.nameEN && movie.nameEN.toLowerCase().indexOf(searchValue) > -1) {
+                result.push(movie);
+            } else if (movie.description && movie.description.toLowerCase().indexOf(searchValue) > -1) {
+                result.push(movie);
+            } else if (movie.director && movie.director.toLowerCase().indexOf(searchValue) > -1) {
+                result.push(movie);
+            }
+        })
+
+        setMovies(result);
+        setPreload(false);
+        if (result.length < 1) {
+            setSearchError("Ничего не найдено");
+        }
     }
 
     function loadUserData(jwt) {
@@ -119,7 +161,7 @@ function App() {
                 if (data === 401) {
                     setLoginFail("Указан неверный логин или пароль");
                 } else {
-                    setLoginFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
+                    setLoginFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз");
                 }
             })
     }
@@ -154,6 +196,10 @@ function App() {
             })
     }
 
+    function clearAllError() {
+        setSearchError('');
+    }
+
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="app">
@@ -166,8 +212,9 @@ function App() {
                     <ProtectedRoute path="/movies" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <Movies preload={preload} fail={fail} movies={movies} isChecked={isCheckboxState}
-                                handleChange={handleCheckboxState} handleSearch={handleSearch} handleSave={handleSaveMovie}/>
+                        <Movies preload={preload} fail={fail} movies={movies} isChecked={isCheckboxState} error={searchError}
+                                handleChange={handleCheckboxState} handleSearch={handleSearch} handleSave={handleSaveMovie}
+                                clearAllError={clearAllError}/>
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>

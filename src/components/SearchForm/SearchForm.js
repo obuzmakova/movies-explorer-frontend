@@ -8,6 +8,7 @@ function SearchForm(props) {
     const [error, setError] = useState('');
 
     function handleChange(e) {
+        props.clearAllError();
         setError('');
         setData(e.target.value);
     }
@@ -20,6 +21,7 @@ function SearchForm(props) {
             return;
         }
         props.handleSearch(data);
+        setData('');
     }
 
     return (
@@ -30,7 +32,7 @@ function SearchForm(props) {
                 <button type="submit" className="search__button" onClick={handleSubmit}/>
             </form>
             <FilterCheckbox isChecked={props.isChecked} handleChange={props.handleChange}/>
-            {error ? <span className="search__text-error">{error}</span> : null}
+            {error || props.error ? <span className="search__text-error">{error || props.error}</span> : null}
         </div>
     );
 }
