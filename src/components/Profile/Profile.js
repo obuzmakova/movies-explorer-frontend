@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
 import './Profile.css';
 import '../Register/Register.css';
 
@@ -78,7 +77,7 @@ function Profile(props) {
                     <button type="submit" className="profile__button profile__button-save" onClick={handleSubmit}>Сохранить</button>
                 }
             </form>
-            {data.disable ? <Link to="/signin" className="profile__button profile__button-exit" onClick={props.handleLogout}>Выйти из аккаунта</Link> : null}
+            {data.disable ? <button className="profile__button profile__button-exit" onClick={props.handleLogout}>Выйти из аккаунта</button> : null}
         </div>
     );
 }

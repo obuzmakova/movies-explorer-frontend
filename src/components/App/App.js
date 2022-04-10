@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -19,7 +19,7 @@ function App() {
     const history = useHistory();
     const CurrentUserContext = React.createContext();
     const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
-    const [isCheckboxState, setCheckboxState] = useState(true);
+    const [isCheckboxState, setCheckboxState] = useState(false);
     const [movies, setMovies] = useState(JSON.parse(localStorage.getItem('allMovies')) || []);
     const [preload, setPreload] = useState(false);
     const [fail, setFail] = useState('');
@@ -31,6 +31,7 @@ function App() {
     const [updateFail, setUpdateFail] = useState('');
     const [updateStatus, setUpdateStatus] = useState('');
     const [searchError, setSearchError] = useState('');
+    const [allFilteredMovies, setAllFilteredMovies] = useState([]);
 
     useEffect(() => {
         checkToken();
@@ -47,7 +48,6 @@ function App() {
                         email: data.email,
                     });
                     setLoggedIn(true);
-                    history.push("/movies");
                 })
                 .catch(() => setLoginFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
         } else {
@@ -62,6 +62,8 @@ function App() {
         });
         setLoggedIn(false);
         localStorage.removeItem('jwt');
+        localStorage.removeItem('allMovies');
+        history.push("/");
     }
 
     function handleMenuPopupOpen() {
@@ -73,14 +75,30 @@ function App() {
     }
 
     function handleCheckboxState() {
-        // setPreload(true);
+        setPreload(true);
         setCheckboxState(!isCheckboxState);
-        //
-        // if (!isCheckboxState) {
-        //     debugger
-        // } else {
-        //     debugger
-        // }
+        const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+        let result = [];
+
+        if (!isCheckboxState && allFilteredMovies.length > 0) {
+            allFilteredMovies.forEach((movie) => {
+                if (movie.duration < 41) {
+                    result.push(movie);
+                }
+            })
+        } else if (isCheckboxState && allFilteredMovies.length > 0) {
+            result = allFilteredMovies;
+        } else if (!isCheckboxState) {
+            allMovies.forEach((movie) => {
+                if (movie.duration < 41) {
+                    result.push(movie);
+                }
+            })
+        } else {
+            result = allMovies;
+        }
+        setMovies(result);
+        setPreload(false);
     }
 
     function handleLoad() {
@@ -96,21 +114,35 @@ function App() {
 
     function handleSearch(value) {
         setPreload(true);
+        setAllFilteredMovies();
         const searchValue = value.toLowerCase();
         const allMovies = JSON.parse(localStorage.getItem('allMovies'));
-        const result = [];
+        const filmList = [];
+        let result = [];
 
         allMovies.forEach((movie) => {
             if (movie.nameRU && movie.nameRU.toLowerCase().indexOf(searchValue) > -1) {
-                result.push(movie);
+                filmList.push(movie);
             } else if (movie.nameEN && movie.nameEN.toLowerCase().indexOf(searchValue) > -1) {
-                result.push(movie);
+                filmList.push(movie);
             } else if (movie.description && movie.description.toLowerCase().indexOf(searchValue) > -1) {
-                result.push(movie);
+                filmList.push(movie);
             } else if (movie.director && movie.director.toLowerCase().indexOf(searchValue) > -1) {
-                result.push(movie);
+                filmList.push(movie);
             }
         })
+
+        setAllFilteredMovies(filmList);
+
+        if (isCheckboxState) {
+            filmList.forEach((movie) => {
+                if (movie.duration < 41) {
+                    result.push(movie);
+                }
+            })
+        } else {
+            result = filmList;
+        }
 
         setMovies(result);
         setPreload(false);
@@ -209,7 +241,7 @@ function App() {
                         <Main />
                         <Footer />
                     </Route>
-                    <ProtectedRoute path="/movies" loggedIn={loggedIn}>
+                    <ProtectedRoute exact path="/movies" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <Movies preload={preload} fail={fail} movies={movies} isChecked={isCheckboxState} error={searchError}
@@ -217,26 +249,26 @@ function App() {
                                 clearAllError={clearAllError}/>
                         <Footer />
                     </ProtectedRoute>
-                    <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
+                    <ProtectedRoute exact path="/saved-movies" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <SavedMovies hasSaved={saved} isChecked={isCheckboxState} handleSearch={handleSearch} handleChange={handleCheckboxState}/>
                         <Footer />
                     </ProtectedRoute>
-                    <ProtectedRoute path="/profile" loggedIn={loggedIn}>
+                    <ProtectedRoute exact path="/profile" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <Profile name={currentUser.name} email={currentUser.email} hangleUpdate={handleUpdate}
                                  updateFail={updateFail} updateStatus={updateStatus} handleLogout={handleLogout}/>
                     </ProtectedRoute>
-                    <Route path="/signup">
-                        <Register fail={registerFail} setRegisterFail={setRegisterFail} handleRegister={handleRegister}/>
+                    <Route exact path="/signup">
+                        {!loggedIn ? <Register fail={registerFail} setRegisterFail={setRegisterFail} handleRegister={handleRegister}/> : <Redirect to="/movies" />}
                     </Route>
-                    <Route path="/signin">
-                        <Login fail={loginFail} setLoginFail={setLoginFail} handleLogin={handleLogin}/>
+                    <Route exact path="/signin">
+                        {!loggedIn ? <Login fail={loginFail} setLoginFail={setLoginFail} handleLogin={handleLogin}/> : <Redirect to="/movies" />}
                     </Route>
-                    <Route>
-                        <ErrorPage />
+                    <Route path="*">
+                        <ErrorPage/>
                     </Route>
                 </Switch>
 
