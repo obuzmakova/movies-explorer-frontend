@@ -73,7 +73,7 @@ export const addNewFilm = (newCountry, newDirector, newDuration, newYear, newDes
 }
 
 export const deleteMovie = (moviesId, jwt) => {
-    return fetch(`${MAIN_URL}/movies/_${moviesId}`, {
+    return fetch(`${MAIN_URL}/movies/${moviesId}`, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',

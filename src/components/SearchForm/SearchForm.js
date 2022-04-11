@@ -21,7 +21,6 @@ function SearchForm(props) {
             return;
         }
         props.handleSearch(data);
-        setData('');
     }
 
     return (

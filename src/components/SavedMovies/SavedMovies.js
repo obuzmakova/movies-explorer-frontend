@@ -3,11 +3,10 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from "../SearchForm/SearchForm";
 
 function SavedMovies(props) {
-
     return (
         <div>
             <SearchForm isChecked={props.isChecked} handleChange={props.handleChange} handleSearch={props.handleSearch}/>
-            {props.hasSaved ? <MoviesCardList isSaved={true} /> : null }
+            {props.hasSaved ? <MoviesCardList movies={props.movies} isSaved={true} /> : null }
         </div>
     );
 }

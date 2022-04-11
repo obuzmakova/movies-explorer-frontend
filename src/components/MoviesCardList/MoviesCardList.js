@@ -32,7 +32,7 @@ function MoviesCardList(props) {
                                                                                  handleSave={props.handleSave}
                                                                                  isSaved={props.isSaved} />))}
             </div>
-            {!props.isSaved && props.movies.length > showMovies ?
+            {props.movies.length > showMovies ?
                 <button className="content__more" onClick={handleShow}>Ещё</button> : null}
         </div>
     );
