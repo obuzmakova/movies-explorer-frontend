@@ -46,6 +46,10 @@ function App() {
                 .then(user => {
                     setCurrentUser(user);
                     setLoggedIn(true);
+                    main.getUserMovies(jwt)
+                        .then((movies) => {
+                            setSavedMovies(movies);
+                        });
                 })
                 .catch(() => setLoginFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
         } else {
@@ -144,6 +148,7 @@ function App() {
     }
 
     function handleSearch(value) {
+        // debugger;
         setPreload(true);
         setAllFilteredMovies();
         const searchValue = value.toLowerCase();
@@ -236,48 +241,31 @@ function App() {
             });
     }
 
-    function handleSaveMovie(movie) {
-        // const ownerSave = movie._owner;
-        // const isSaved = ownerSave.some(i => i === currentUser._id);
-        debugger;
+    function handleDelete(movieId) {
         const jwt = localStorage.getItem('jwt');
-        // let savedFilms = savedMovies;
-        // let findInUserMovies;
+
+        main.deleteMovie(movieId, jwt)
+            .then(() => {
+                main.getUserMovies(jwt)
+                    .then((movies) => {
+                        setSavedMovies(movies);
+                    });
+            })
+    }
+
+    function handleSaveMovie(movie) {
+        const jwt = localStorage.getItem('jwt');
         debugger;
-        if (!movie.owner) {
-            main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description,
-                    `https://api.nomoreparties.co/` + movie.image.url, movie.trailerLink,
-                    movie.nameRU, movie.nameEN, `https://api.nomoreparties.co/` + movie.image.url, movie.id, jwt)
-                    .then((data) => {
-                        debugger;
-                        // setSaved(true);
+        main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description,
+            movie.image, movie.trailerLink, movie.nameRU, movie.nameEN, movie.image, movie.id, jwt)
+            .then(() => {
+                main.getUserMovies(jwt)
+                    .then((movies) => {
+                        setSavedMovies(movies);
                     })
-            } else {
-            main.deleteMovie(movie._id, jwt)
-                .then((data) => {
-                   debugger;
-                })
-        }
-        // main.getUserMovies(jwt)
-        //     .then((movies) => {
-        //         movies.forEach((item) => {
-        //             if (movie.nameRU === item.nameRU) {
-        //                 main.deleteMovie(item._id, jwt)
-        //                     .then(() => {
-        //                     })
-        //             }
-                    // else {
-                    //     main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description,
-                    //         `https://api.nomoreparties.co/` + movie.image.url, movie.trailerLink,
-                    //         movie.nameRU, movie.nameEN, `https://api.nomoreparties.co/` + movie.image.url, movie.id, jwt)
-                    //         .then((data) => {
-                    //             setSaved(true);
-                    //             savedFilms.push(data);
-                    //             setSavedMovies(savedFilms);
-                    //         })
-                    // }
-            //     })
-            // })
+                    .catch(() => console.log("Ошибка чтения сохраненных фильмов"))
+            })
+            .catch(() => console.log("Фильм не удалось сохранить"));
     }
 
     function clearAllError() {
@@ -298,13 +286,16 @@ function App() {
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <Movies preload={preload} fail={fail} movies={movies} savedMovies={savedMovies}
                                 isChecked={isCheckboxState} error={searchError} handleChange={handleCheckboxState}
-                                handleSearch={handleSearch} handleSave={handleSaveMovie} clearAllError={clearAllError}/>
+                                handleSearch={handleSearch} handleDelete={handleDelete} handleSave={handleSaveMovie}
+                                clearAllError={clearAllError}/>
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/saved-movies" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <SavedMovies movies={savedMovies} isChecked={isCheckboxState} handleSearch={handleSearch} handleChange={handleCheckboxState}/>
+                        <SavedMovies movies={savedMovies} savedMovies={savedMovies} isChecked={isCheckboxState}
+                                     handleSearch={handleSearch} handleDelete={handleDelete}
+                                     handleChange={handleCheckboxState}/>
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/profile" loggedIn={loggedIn}>

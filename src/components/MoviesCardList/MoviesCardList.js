@@ -28,9 +28,11 @@ function MoviesCardList(props) {
     return (
         <div className="content">
             <div className="content__elements">
-                {(props.movies).slice(0, showMovies).map((movie) => (<MoviesCard key={movie.id} movie={movie}
+                {(props.movies).slice(0, showMovies).map((movie) => (<MoviesCard key={movie.id}
+                                                                                 movie={movie}
                                                                                  savedMovies={props.savedMovies}
                                                                                  handleSave={props.handleSave}
+                                                                                 handleDelete={props.handleDelete}
                                                                                  isSaved={props.isSaved} />))}
             </div>
             {props.movies.length > showMovies ?

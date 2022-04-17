@@ -6,7 +6,7 @@ function SavedMovies(props) {
     return (
         <div>
             <SearchForm isChecked={props.isChecked} handleChange={props.handleChange} handleSearch={props.handleSearch}/>
-            <MoviesCardList movies={props.movies} isSaved={true} />
+            <MoviesCardList movies={props.movies} isSaved={true} savedMovies={props.savedMovies} handleDelete={props.handleDelete}/>
         </div>
     );
 }
