@@ -16,7 +16,7 @@ function SearchForm(props) {
     function handleSubmit(e) {
         e.preventDefault();
 
-        if (!data) {
+        if (!data || data.length < 2) {
             setError("Нужно ввести ключевое слово");
             return;
         }

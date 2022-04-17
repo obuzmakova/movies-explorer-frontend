@@ -19,8 +19,8 @@ import {CurrentUserContext} from "../../context/CurrentUserContext";
 function App() {
     const history = useHistory();
     const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
-    const [isCheckboxState, setCheckboxState] = useState(false);
     const [movies, setMovies] = useState(JSON.parse(localStorage.getItem('allMovies')) || []);
+    const [checkboxState, setCheckboxState] = useState(false);
     const [preload, setPreload] = useState(false);
     const [fail, setFail] = useState('');
     const [loginFail, setLoginFail] = useState('');
@@ -30,8 +30,7 @@ function App() {
     const [updateFail, setUpdateFail] = useState('');
     const [updateStatus, setUpdateStatus] = useState('');
     const [searchError, setSearchError] = useState('');
-    const [allFilteredMovies, setAllFilteredMovies] = useState([]);
-    const [allFilteredSavedMovies, setAllFilteredSavedMovies] = useState([]);
+    const [searchValue, setSearchValue] = useState();
     const [savedMovies, setSavedMovies] = useState([]);
 
     useEffect(() => {
@@ -46,10 +45,7 @@ function App() {
                 .then(user => {
                     setCurrentUser(user);
                     setLoggedIn(true);
-                    main.getUserMovies(jwt)
-                        .then((movies) => {
-                            setSavedMovies(movies);
-                        });
+                    updateSavedMovies(jwt);
                 })
                 .catch(() => setLoginFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
         } else {
@@ -73,48 +69,17 @@ function App() {
         setMenuPopupOpen(false);
     }
 
+    useEffect(() => {
+        if (searchValue) {
+            handleSearch(searchValue);
+        } else {
+            pageHandleChange();
+        }
+    }, [checkboxState]);
+
     function handleCheckboxState() {
         setPreload(true);
-        setCheckboxState(!isCheckboxState);
-        const allMovies = JSON.parse(localStorage.getItem('allMovies'));
-        let result = [];
-        let resultSavedMovies = [];
-
-        if (!isCheckboxState && allFilteredMovies.length > 0) {
-            allFilteredMovies.forEach((movie) => {
-                if (movie.duration < 41) {
-                    result.push(movie);
-                }
-            })
-            if (allFilteredSavedMovies.length > 0) {
-                allFilteredSavedMovies.forEach((movie) => {
-                    if (movie.duration < 41) {
-                        resultSavedMovies.push(movie);
-                    }
-                })
-            }
-        } else if (isCheckboxState && allFilteredMovies.length > 0) {
-            result = allFilteredMovies;
-            if (allFilteredSavedMovies.length > 0) {
-                resultSavedMovies = allFilteredSavedMovies;
-            }
-        } else if (!isCheckboxState) {
-            allMovies.forEach((movie) => {
-                if (movie.duration < 41) {
-                    result.push(movie);
-                }
-            })
-            savedMovies.forEach((movie) => {
-                if (movie.duration < 41) {
-                    resultSavedMovies.push(movie);
-                }
-            })
-        } else {
-            result = allMovies;
-            resultSavedMovies = savedMovies;
-        }
-        setMovies(result);
-        setSavedMovies(resultSavedMovies);
+        setCheckboxState(!checkboxState);
         setPreload(false);
     }
 
@@ -133,7 +98,9 @@ function App() {
         setPreload(false);
     }
 
-    function searchFilms(searchValue, result, movies) {
+    function searchFilms(searchValue, movies) {
+        let result = [];
+
         movies.forEach((movie) => {
             if (movie.nameRU && movie.nameRU.toLowerCase().indexOf(searchValue) > -1) {
                 result.push(movie);
@@ -145,49 +112,52 @@ function App() {
                 result.push(movie);
             }
         })
+        return result;
     }
 
     function handleSearch(value) {
-        // debugger;
         setPreload(true);
-        setAllFilteredMovies();
+        setSearchValue(value);
         const searchValue = value.toLowerCase();
         const allMovies = JSON.parse(localStorage.getItem('allMovies'));
-        const filmList = [];
-        const filmSavedList = [];
+        const filteredAll = searchFilms(searchValue, allMovies);
         let result = [];
-        let resultSavedMovies = [];
 
-        searchFilms(searchValue, filmList, allMovies);
-        searchFilms(searchValue, filmSavedList, savedMovies);
-
-        setAllFilteredMovies(filmList);
-        setAllFilteredSavedMovies(filmSavedList);
-
-        if (isCheckboxState) {
-            filmList.forEach((movie) => {
+        if (checkboxState) {
+            filteredAll.forEach((movie) => {
                 if (movie.duration < 41) {
                     result.push(movie);
                 }
             })
-            filmSavedList.forEach((movie) => {
-                if (movie.duration < 41) {
-                    resultSavedMovies.push(movie);
-                }
-            })
         } else {
-            result = filmList;
-            resultSavedMovies = filmSavedList;
+            result = filteredAll;
         }
         setMovies(result);
-        setSavedMovies(resultSavedMovies);
         setPreload(false);
         if (result.length < 1) {
             setSearchError("Ничего не найдено");
         }
     }
 
+    function pageHandleChange() {
+        setSearchValue();
+        const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+        const jwt = localStorage.getItem('jwt');
 
+        main.getUserMovies(jwt)
+            .then((movies) => {
+                if (checkboxState) {
+                    const resultAll = allMovies.filter(movie => movie.duration < 41);
+                    const resultSaved = movies.filter(movie => movie.duration < 41);
+
+                    setMovies(resultAll);
+                    setSavedMovies(resultSaved);
+                } else {
+                    setMovies(allMovies);
+                    setSavedMovies(movies);
+                }
+            });
+    }
 
     function handleUpdate({name, email}) {
         const jwt = localStorage.getItem('jwt');
@@ -216,6 +186,7 @@ function App() {
                         setCurrentUser(user);
                         handleLoad(jwt);
                     })
+                    .catch(() => console.log("Ошибка чтения пользовательских данных"))
             })
             .catch((data) => {
                 if (data === 401) {
@@ -241,29 +212,31 @@ function App() {
             });
     }
 
+    function updateSavedMovies(jwt) {
+        main.getUserMovies(jwt)
+            .then((movies) => {
+                setSavedMovies(movies);
+            })
+            .catch(() => console.log("Ошибка чтения сохраненных фильмов"));
+    }
+
     function handleDelete(movieId) {
         const jwt = localStorage.getItem('jwt');
 
         main.deleteMovie(movieId, jwt)
             .then(() => {
-                main.getUserMovies(jwt)
-                    .then((movies) => {
-                        setSavedMovies(movies);
-                    });
+                updateSavedMovies(jwt);
             })
+            .catch(() => console.log("Фильм не удалось удалить"));
     }
 
     function handleSaveMovie(movie) {
         const jwt = localStorage.getItem('jwt');
-        debugger;
+
         main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description,
             movie.image, movie.trailerLink, movie.nameRU, movie.nameEN, movie.image, movie.id, jwt)
             .then(() => {
-                main.getUserMovies(jwt)
-                    .then((movies) => {
-                        setSavedMovies(movies);
-                    })
-                    .catch(() => console.log("Ошибка чтения сохраненных фильмов"))
+                updateSavedMovies(jwt);
             })
             .catch(() => console.log("Фильм не удалось сохранить"));
     }
@@ -282,27 +255,25 @@ function App() {
                         <Footer />
                     </Route>
                     <ProtectedRoute exact path="/movies" loggedIn={loggedIn}>
-                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
+                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={pageHandleChange}
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <Movies preload={preload} fail={fail} movies={movies} savedMovies={savedMovies}
-                                isChecked={isCheckboxState} error={searchError} handleChange={handleCheckboxState}
+                                isChecked={checkboxState} error={searchError} handleChange={handleCheckboxState}
                                 handleSearch={handleSearch} handleDelete={handleDelete} handleSave={handleSaveMovie}
                                 clearAllError={clearAllError}/>
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/saved-movies" loggedIn={loggedIn}>
-                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
+                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={pageHandleChange}
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <SavedMovies movies={savedMovies} savedMovies={savedMovies} isChecked={isCheckboxState}
-                                     handleSearch={handleSearch} handleDelete={handleDelete}
-                                     handleChange={handleCheckboxState}/>
+                        <SavedMovies movies={savedMovies} savedMovies={savedMovies} isChecked={checkboxState} handleSearch={handleSearch}
+                                     handleDelete={handleDelete} handleChange={handleCheckboxState}/>
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/profile" loggedIn={loggedIn}>
-                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
+                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={pageHandleChange}
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <Profile currentUser={currentUser} hangleUpdate={handleUpdate}
-                                 updateFail={updateFail} updateStatus={updateStatus} handleLogout={handleLogout}/>
+                        <Profile hangleUpdate={handleUpdate} updateFail={updateFail} updateStatus={updateStatus} handleLogout={handleLogout}/>
                     </ProtectedRoute>
                     <Route exact path="/signup">
                         {!loggedIn ? <Register fail={registerFail} setRegisterFail={setRegisterFail} handleRegister={handleRegister}/> : <Redirect to="/movies" />}
@@ -315,7 +286,7 @@ function App() {
                     </Route>
                 </Switch>
 
-                <MenuPopup generalText="Главная" filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
+                <MenuPopup generalText="Главная" filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={pageHandleChange}
                            isOpen={isMenuPopupOpen} onClose={handleMenuPopupClose}/>
 
             </div>

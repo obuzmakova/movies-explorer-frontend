@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import './Profile.css';
 import '../Register/Register.css';
+import {CurrentUserContext} from '../../context/CurrentUserContext';
 
 function Profile(props) {
+    const currentUser = React.useContext(CurrentUserContext);
     const [data, setData] = useState({
-        name: props.currentUser.name,
-        email: props.currentUser.email,
+        name: currentUser.name,
+        email: currentUser.email,
         disable: true
     })
 

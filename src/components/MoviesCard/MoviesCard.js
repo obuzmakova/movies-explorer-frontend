@@ -17,7 +17,7 @@ function MoviesCard(props) {
         id: props.isSaved ? props.movie._id : props.movie.id,
         nameRU: props.movie.nameRU || 'не указано',
         nameEN: props.movie.nameEN || 'не указано',
-        trailerLink: props.isSaved ? props.movie.trailer : props.movie.trailerLink,
+        trailerLink: props.isSaved ? props.movie.trailer : props.movie.trailerLink || 'https://youtube.com',
         year: props.movie.year || 'не указан',
     }
 
