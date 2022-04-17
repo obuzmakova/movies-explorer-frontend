@@ -1,11 +1,22 @@
 import React, {useState} from 'react';
+import {CurrentUserContext} from '../../context/CurrentUserContext';
 import './MoviesCard.css'
 
 function MoviesCard(props) {
-    const [savedCard, setCardSaved] = useState(false);
+    const currentUser = React.useContext(CurrentUserContext);
+    const [saved, setSaved] = React.useState(false);
+    const alreadyMoviesSaved = props.savedMovies.find((movie) => movie.nameRU === props.movie.nameRU && movie.owner === currentUser._id);
+    const cardSaveButtonClassName = (`card__save ${saved ? 'card__save_active' : 'card__save'}`);
+    const calcDuration = checkDuration(props.movie.duration);
+
+    React.useEffect(() => {
+        if (alreadyMoviesSaved) {
+            setSaved(true);
+        }
+    }, [alreadyMoviesSaved])
 
     function handleCardSave() {
-        setCardSaved(!savedCard);
+        debugger;
         props.handleSave(props.movie);
     }
 
@@ -21,12 +32,6 @@ function MoviesCard(props) {
             return minutes + `м`
         }
     }
-
-    const cardSaveButtonClassName = (
-        `card__save ${savedCard ? 'card__save_active' : 'card__save'}`
-    );
-
-    const calcDuration = checkDuration(props.movie.duration);
 
     return (
         <div className="card">

@@ -14,11 +14,10 @@ import MenuPopup from "../MenuPopup/MenuPopup";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import * as api from '../../utils/MoviesApi';
 import * as main from '../../utils/MainApi';
-import {deleteMovie} from "../../utils/MainApi";
+import {CurrentUserContext} from "../../context/CurrentUserContext";
 
 function App() {
     const history = useHistory();
-    const CurrentUserContext = React.createContext();
     const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
     const [isCheckboxState, setCheckboxState] = useState(false);
     const [movies, setMovies] = useState(JSON.parse(localStorage.getItem('allMovies')) || []);
@@ -27,8 +26,7 @@ function App() {
     const [loginFail, setLoginFail] = useState('');
     const [registerFail, setRegisterFail] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
-    const [currentUser, setCurrentUser] = useState({ name: '', email: ''});
-    const [saved, setSaved] = useState(false);
+    const [currentUser, setCurrentUser] = useState();
     const [updateFail, setUpdateFail] = useState('');
     const [updateStatus, setUpdateStatus] = useState('');
     const [searchError, setSearchError] = useState('');
@@ -45,11 +43,8 @@ function App() {
 
         if (jwt) {
             main.checkToken(jwt)
-                .then(data => {
-                    setCurrentUser({
-                        name: data.name,
-                        email: data.email,
-                    });
+                .then(user => {
+                    setCurrentUser(user);
                     setLoggedIn(true);
                 })
                 .catch(() => setLoginFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
@@ -59,10 +54,7 @@ function App() {
     }
 
     function handleLogout() {
-        setCurrentUser({
-            name: '',
-            email: ''
-        });
+        setCurrentUser();
         setLoggedIn(false);
         localStorage.removeItem('jwt');
         localStorage.removeItem('allMovies');
@@ -122,15 +114,19 @@ function App() {
         setPreload(false);
     }
 
-    function handleLoad() {
+    function handleLoad(jwt) {
         setPreload(true);
-        api.getInitialMovies()
+        main.getUserMovies(jwt)
             .then((movies) => {
-                localStorage.setItem('allMovies', JSON.stringify(movies));
-                setMovies(movies);
-                setPreload(false);
+                setSavedMovies(movies);
+                api.getInitialMovies()
+                    .then((movies) => {
+                        localStorage.setItem('allMovies', JSON.stringify(movies));
+                        setMovies(movies);
+                    })
+                    .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
             })
-            .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
+        setPreload(false);
     }
 
     function searchFilms(searchValue, result, movies) {
@@ -178,7 +174,6 @@ function App() {
             result = filmList;
             resultSavedMovies = filmSavedList;
         }
-
         setMovies(result);
         setSavedMovies(resultSavedMovies);
         setPreload(false);
@@ -187,25 +182,14 @@ function App() {
         }
     }
 
-    function loadUserData(jwt) {
-        main.getUserInfo(jwt)
-            .then((data) => {
-                setCurrentUser({
-                    name: data.name,
-                    email: data.email
-                });
-            })
-    }
+
 
     function handleUpdate({name, email}) {
         const jwt = localStorage.getItem('jwt');
 
         main.updateUserInfo(name, email, jwt)
-            .then((data) => {
-                setCurrentUser({
-                    name: data.name,
-                    email: data.email
-                });
+            .then((user) => {
+                setCurrentUser(user);
                 setUpdateStatus("Данные успешно обновлены");
             })
             .catch(() => {
@@ -217,13 +201,16 @@ function App() {
         setRegisterFail('');
         main.authorize(email, password)
             .then((data) => {
-                localStorage.setItem('jwt', data.token);
+                let jwt = data.token;
+
+                localStorage.setItem('jwt', jwt);
                 setLoggedIn(true);
                 history.push("/movies");
-            })
-            .then(() => {
-                loadUserData(localStorage.getItem('jwt'));
-                handleLoad();
+                main.getUserInfo(jwt)
+                    .then((user) => {
+                        setCurrentUser(user);
+                        handleLoad(jwt);
+                    })
             })
             .catch((data) => {
                 if (data === 401) {
@@ -250,29 +237,47 @@ function App() {
     }
 
     function handleSaveMovie(movie) {
+        // const ownerSave = movie._owner;
+        // const isSaved = ownerSave.some(i => i === currentUser._id);
+        debugger;
         const jwt = localStorage.getItem('jwt');
-
-        main.getUserMovies(jwt)
-            .then((movies) => {
-                movies.forEach((item) => {
-                    if (movie.nameRU === item.nameRU) {
-                        main.deleteMovie(item._id, jwt)
-                            .then(() => {
-
-                            })
-                    } else {
-                        main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description,
-                            `https://api.nomoreparties.co/` + movie.image.url, movie.trailerLink,
-                            movie.nameRU, movie.nameEN, `https://api.nomoreparties.co/` + movie.image.url, movie.id, jwt)
-                            .then((data) => {
-                                debugger;
-                                // setSaved(true);
-                                // savedFilms.push(data);
-                                // setSavedMovies(savedFilms);
-                            })
-                    }
+        // let savedFilms = savedMovies;
+        // let findInUserMovies;
+        debugger;
+        if (!movie.owner) {
+            main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description,
+                    `https://api.nomoreparties.co/` + movie.image.url, movie.trailerLink,
+                    movie.nameRU, movie.nameEN, `https://api.nomoreparties.co/` + movie.image.url, movie.id, jwt)
+                    .then((data) => {
+                        debugger;
+                        // setSaved(true);
+                    })
+            } else {
+            main.deleteMovie(movie._id, jwt)
+                .then((data) => {
+                   debugger;
                 })
-            })
+        }
+        // main.getUserMovies(jwt)
+        //     .then((movies) => {
+        //         movies.forEach((item) => {
+        //             if (movie.nameRU === item.nameRU) {
+        //                 main.deleteMovie(item._id, jwt)
+        //                     .then(() => {
+        //                     })
+        //             }
+                    // else {
+                    //     main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description,
+                    //         `https://api.nomoreparties.co/` + movie.image.url, movie.trailerLink,
+                    //         movie.nameRU, movie.nameEN, `https://api.nomoreparties.co/` + movie.image.url, movie.id, jwt)
+                    //         .then((data) => {
+                    //             setSaved(true);
+                    //             savedFilms.push(data);
+                    //             setSavedMovies(savedFilms);
+                    //         })
+                    // }
+            //     })
+            // })
     }
 
     function clearAllError() {
@@ -291,21 +296,21 @@ function App() {
                     <ProtectedRoute exact path="/movies" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <Movies saved={saved} preload={preload} fail={fail} movies={movies} isChecked={isCheckboxState} error={searchError}
-                                handleChange={handleCheckboxState} handleSearch={handleSearch} handleSave={handleSaveMovie}
-                                clearAllError={clearAllError}/>
+                        <Movies preload={preload} fail={fail} movies={movies} savedMovies={savedMovies}
+                                isChecked={isCheckboxState} error={searchError} handleChange={handleCheckboxState}
+                                handleSearch={handleSearch} handleSave={handleSaveMovie} clearAllError={clearAllError}/>
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/saved-movies" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <SavedMovies movies={savedMovies} hasSaved={saved} isChecked={isCheckboxState} handleSearch={handleSearch} handleChange={handleCheckboxState}/>
+                        <SavedMovies movies={savedMovies} isChecked={isCheckboxState} handleSearch={handleSearch} handleChange={handleCheckboxState}/>
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/profile" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт"
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <Profile name={currentUser.name} email={currentUser.email} hangleUpdate={handleUpdate}
+                        <Profile currentUser={currentUser} hangleUpdate={handleUpdate}
                                  updateFail={updateFail} updateStatus={updateStatus} handleLogout={handleLogout}/>
                     </ProtectedRoute>
                     <Route exact path="/signup">

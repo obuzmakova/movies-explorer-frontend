@@ -29,6 +29,7 @@ function MoviesCardList(props) {
         <div className="content">
             <div className="content__elements">
                 {(props.movies).slice(0, showMovies).map((movie) => (<MoviesCard key={movie.id} movie={movie}
+                                                                                 savedMovies={props.savedMovies}
                                                                                  handleSave={props.handleSave}
                                                                                  isSaved={props.isSaved} />))}
             </div>

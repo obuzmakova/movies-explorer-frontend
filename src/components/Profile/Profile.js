@@ -4,8 +4,8 @@ import '../Register/Register.css';
 
 function Profile(props) {
     const [data, setData] = useState({
-        name: props.name,
-        email: props.email,
+        name: props.currentUser.name,
+        email: props.currentUser.email,
         disable: true
     })
 
