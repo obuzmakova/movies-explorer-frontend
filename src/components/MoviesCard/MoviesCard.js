@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
 import './MoviesCard.css'
 
@@ -21,7 +21,7 @@ function MoviesCard(props) {
         year: props.movie.year || 'не указан',
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (alreadyMoviesSaved) {
             setSaved(true);
         }
@@ -31,11 +31,11 @@ function MoviesCard(props) {
         const movieInSaved = props.isSaved ? props.savedMovies.find((movie) => movie._id === props.movie._id) :
             props.savedMovies.find((movie) => movie.movieId === props.movie.id);
 
-        if (saved && movieInSaved) {
+        if (props.isSaved && saved && movieInSaved) {
             if (props.handleDelete(movieInSaved._id)) {
                 setSaved(!saved);
             }
-        } else {
+        } else if (!movieInSaved) {
             if (props.handleSave(movie)) {
                 setSaved(!saved);
             }

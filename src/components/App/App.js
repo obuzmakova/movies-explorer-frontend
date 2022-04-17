@@ -79,6 +79,7 @@ function App() {
 
     function handleCheckboxState() {
         setPreload(true);
+        clearAllError();
         setCheckboxState(!checkboxState);
         setPreload(false);
     }
@@ -119,7 +120,8 @@ function App() {
         setPreload(true);
         setSearchValue(value);
         const searchValue = value.toLowerCase();
-        const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+        const page = window.location.pathname;
+        const allMovies = (page === '/movies') ? JSON.parse(localStorage.getItem('allMovies')) : savedMovies;
         const filteredAll = searchFilms(searchValue, allMovies);
         let result = [];
 
@@ -132,7 +134,7 @@ function App() {
         } else {
             result = filteredAll;
         }
-        setMovies(result);
+        (page === '/movies') ? setMovies(result) : setSavedMovies(result);
         setPreload(false);
         if (result.length < 1) {
             setSearchError("Ничего не найдено");
@@ -141,6 +143,7 @@ function App() {
 
     function pageHandleChange() {
         setSearchValue();
+        clearAllError();
         const allMovies = JSON.parse(localStorage.getItem('allMovies'));
         const jwt = localStorage.getItem('jwt');
 
@@ -267,7 +270,8 @@ function App() {
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={pageHandleChange}
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <SavedMovies movies={savedMovies} savedMovies={savedMovies} isChecked={checkboxState} handleSearch={handleSearch}
-                                     handleDelete={handleDelete} handleChange={handleCheckboxState}/>
+                                     handleDelete={handleDelete} handleChange={handleCheckboxState} clearAllError={clearAllError}
+                                     error={searchError}/>
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/profile" loggedIn={loggedIn}>
