@@ -246,6 +246,8 @@ function App() {
 
     function clearAllError() {
         setSearchError('');
+        setUpdateFail('');
+        setUpdateStatus('');
     }
 
     return (
@@ -277,7 +279,8 @@ function App() {
                     <ProtectedRoute exact path="/profile" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={pageHandleChange}
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <Profile hangleUpdate={handleUpdate} updateFail={updateFail} updateStatus={updateStatus} handleLogout={handleLogout}/>
+                        <Profile hangleUpdate={handleUpdate} updateFail={updateFail} updateStatus={updateStatus} handleLogout={handleLogout}
+                                 setUpdateFail={setUpdateFail} setUpdateStatus={setUpdateStatus}/>
                     </ProtectedRoute>
                     <Route exact path="/signup">
                         {!loggedIn ? <Register fail={registerFail} setRegisterFail={setRegisterFail} handleRegister={handleRegister}/> : <Redirect to="/movies" />}

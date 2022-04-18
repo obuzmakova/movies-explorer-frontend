@@ -11,11 +11,6 @@ function Profile(props) {
         disable: true
     })
 
-    const [errors, setErrors] = useState({
-        name: '',
-        email: ''
-    });
-
     function handleChange(e) {
         const {name, value} = e.target;
 
@@ -23,14 +18,12 @@ function Profile(props) {
             ...data,
             [name]: value
         })
-        setErrors({
-            ...errors,
-            [name]: e.target.validationMessage
-        });
     }
 
     function handleEdit(e) {
         e.preventDefault();
+        props.setUpdateStatus("");
+        props.setUpdateFail("");
 
         setData({
             ...data,
