@@ -45,7 +45,8 @@ function App() {
                 .then(user => {
                     setCurrentUser(user);
                     setLoggedIn(true);
-                    updateSavedMovies(jwt);
+                    handleChangePage();
+                    history.push("/movies");
                 })
                 .catch(() => setLoginFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
         } else {
@@ -54,10 +55,10 @@ function App() {
     }
 
     function handleLogout() {
+        localStorage.removeItem('allMovies');
+        localStorage.removeItem('jwt');
         setCurrentUser();
         setLoggedIn(false);
-        localStorage.removeItem('jwt');
-        localStorage.removeItem('allMovies');
         history.push("/");
     }
 
@@ -72,8 +73,8 @@ function App() {
     useEffect(() => {
         if (searchValue) {
             handleSearch(searchValue);
-        } else {
-            pageHandleChange();
+        } else if (loggedIn) {
+            handleChangePage();
         }
     }, [checkboxState]);
 
@@ -96,6 +97,7 @@ function App() {
                     })
                     .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
             })
+            .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
         setPreload(false);
     }
 
@@ -141,7 +143,7 @@ function App() {
         }
     }
 
-    function pageHandleChange() {
+    function handleChangePage() {
         setSearchValue();
         clearAllError();
         const allMovies = JSON.parse(localStorage.getItem('allMovies'));
@@ -159,7 +161,8 @@ function App() {
                     setMovies(allMovies);
                     setSavedMovies(movies);
                 }
-            });
+            })
+            .catch(() => console.log("Ошибка чтения данных"));
     }
 
     function handleUpdate({name, email}) {
@@ -182,12 +185,14 @@ function App() {
                 let jwt = data.token;
 
                 localStorage.setItem('jwt', jwt);
-                setLoggedIn(true);
-                history.push("/movies");
                 main.getUserInfo(jwt)
                     .then((user) => {
                         setCurrentUser(user);
                         handleLoad(jwt);
+                    })
+                    .then(() => {
+                        setLoggedIn(true);
+                        history.push("/movies");
                     })
                     .catch(() => console.log("Ошибка чтения пользовательских данных"))
             })
@@ -215,20 +220,12 @@ function App() {
             });
     }
 
-    function updateSavedMovies(jwt) {
-        main.getUserMovies(jwt)
-            .then((movies) => {
-                setSavedMovies(movies);
-            })
-            .catch(() => console.log("Ошибка чтения сохраненных фильмов"));
-    }
-
     function handleDelete(movieId) {
         const jwt = localStorage.getItem('jwt');
 
         main.deleteMovie(movieId, jwt)
             .then(() => {
-                updateSavedMovies(jwt);
+                handleChangePage();
             })
             .catch(() => console.log("Фильм не удалось удалить"));
     }
@@ -239,7 +236,7 @@ function App() {
         main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description,
             movie.image, movie.trailerLink, movie.nameRU, movie.nameEN, movie.image, movie.id, jwt)
             .then(() => {
-                updateSavedMovies(jwt);
+                handleChangePage();
             })
             .catch(() => console.log("Фильм не удалось сохранить"));
     }
@@ -260,7 +257,7 @@ function App() {
                         <Footer />
                     </Route>
                     <ProtectedRoute exact path="/movies" loggedIn={loggedIn}>
-                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={pageHandleChange}
+                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={handleChangePage}
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <Movies preload={preload} fail={fail} movies={movies} savedMovies={savedMovies}
                                 isChecked={checkboxState} error={searchError} handleChange={handleCheckboxState}
@@ -269,7 +266,7 @@ function App() {
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/saved-movies" loggedIn={loggedIn}>
-                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={pageHandleChange}
+                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={handleChangePage}
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <SavedMovies movies={savedMovies} savedMovies={savedMovies} isChecked={checkboxState} handleSearch={handleSearch}
                                      handleDelete={handleDelete} handleChange={handleCheckboxState} clearAllError={clearAllError}
@@ -277,7 +274,7 @@ function App() {
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/profile" loggedIn={loggedIn}>
-                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={pageHandleChange}
+                        <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={handleChangePage}
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <Profile hangleUpdate={handleUpdate} updateFail={updateFail} updateStatus={updateStatus} handleLogout={handleLogout}
                                  setUpdateFail={setUpdateFail} setUpdateStatus={setUpdateStatus}/>
@@ -293,7 +290,7 @@ function App() {
                     </Route>
                 </Switch>
 
-                <MenuPopup generalText="Главная" filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={pageHandleChange}
+                <MenuPopup generalText="Главная" filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={handleChangePage}
                            isOpen={isMenuPopupOpen} onClose={handleMenuPopupClose}/>
 
             </div>
