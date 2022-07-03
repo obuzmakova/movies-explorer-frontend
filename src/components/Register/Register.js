@@ -3,11 +3,51 @@ import { Link } from 'react-router-dom';
 import './Register.css';
 import headerLogo from "../../images/header-logo.svg";
 
-function Register() {
+function Register(props) {
     const [data, setData] = useState({
-        name: 'Ольга',
-        email: 'olga@yandex.ru'
-    })
+        email: '',
+        password: '',
+        name: ''
+    });
+    const [errors, setErrors] = useState({
+        email: '',
+        password: '',
+        name: ''
+    });
+    const [isValid, setIsValid] = React.useState(false);
+
+    function handleChange(e) {
+        const {name, value} = e.target;
+        const regexName = /[^-\wа-я\sё]/gi;
+
+        props.setRegisterFail('');
+        if (name === "name" && regexName.test(value)) {
+            setErrors ({
+                ...errors,
+                [name]: "Имя может содержать только латиницу, кириллицу, пробел или дефис"
+            })
+            setData({
+                ...data,
+                [name]: value
+            })
+            return;
+        }
+        setData({
+            ...data,
+            [name]: value
+        })
+        setErrors({
+            ...errors,
+            [name]: e.target.validationMessage
+        });
+        setIsValid(e.target.closest("form").checkValidity());
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        const {email, password, name} = data;
+        props.handleRegister({email, password, name});
+    }
 
     return (
         <div className="register">
@@ -17,25 +57,30 @@ function Register() {
             <p className="register__welcome">
                 Добро пожаловать!
             </p>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="register__rows">
                     <label htmlFor="name">
                         Имя
                     </label>
-                    <input id="name" name="name" type="text" className="register__text"
-                           value={data.name} />
+                    <input id="name" name="name" type="text" className="register__text" onChange={handleChange}
+                           value={data.name} required/>
+                    {errors.name ? <span className="register__error">{errors.name}</span> : null}
                     <label htmlFor="email">
                         E-mail
                     </label>
-                    <input id="email" name="email" type="email" className="register__text"
-                           value={data.email}/>
+                    <input id="email" name="email" type="email" className="register__text" onChange={handleChange}
+                           value={data.email} required/>
+                    {errors.email ? <span className="register__error">{errors.email}</span> : null}
                     <label htmlFor="password">
                         Пароль
                     </label>
-                    <input id="password" name="password" type="password" className="register__text"
-                           value={data.password} />
+                    <input id="password" name="password" type="password" className="register__text" onChange={handleChange}
+                           value={data.password} required/>
+                    {errors.password ? <span className="register__error">{errors.password}</span> : null}
+                    {props.fail ? <span className="register__error">{props.fail}</span> : null}
                 </div>
-                <button type="submit" className="register__button">Зарегистрироваться</button>
+                <button type="submit" className={isValid ? "register__button" : "register__button " +
+                    "register__button_inactive"}>Зарегистрироваться</button>
             </form>
 
             <div className="register__signin">

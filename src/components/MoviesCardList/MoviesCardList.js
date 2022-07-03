@@ -1,18 +1,41 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './MoviesCardList.css';
 import MoviesCard from "../MoviesCard/MoviesCard";
-import film from "../../images/film.jpg"
 
 function MoviesCardList(props) {
+    const breakpointMiddle = 768;
+    const [width, setWidth] = React.useState(window.innerWidth);
+    const [showMovies, setShowMovies] = useState((width > breakpointMiddle) ? 12 : ((width === breakpointMiddle) ? 8 : 5));
+
+    React.useEffect(() => {
+        const handleResizeWindow = () => setWidth(window.innerWidth);
+        // subscribe to window resize event "onComponentDidMount"
+        window.addEventListener("resize", handleResizeWindow);
+        return () => {
+            // unsubscribe "onComponentDestroy"
+            window.removeEventListener("resize", handleResizeWindow);
+        };
+    }, []);
+
+    function handleShow() {
+        if (window.innerWidth > breakpointMiddle) {
+            setShowMovies(Math.min(props.movies.length, showMovies + 3));
+        } else {
+            setShowMovies(Math.min(props.movies.length, showMovies + 2));
+        }
+    }
+
     return (
         <div className="content">
             <div className="content__elements">
-                <MoviesCard isSaved={props.isSaved} name="33 слова о дизайне" duration="1ч 47м" image={film}/>
-                <MoviesCard isSaved={props.isSaved} name="33 слова о дизайне" duration="1ч 47м" image={film}/>
-                <MoviesCard isSaved={props.isSaved} name="33 слова о дизайне" duration="1ч 47м" image={film}/>
-                <MoviesCard isSaved={props.isSaved} name="33 слова о дизайне" duration="1ч 47м" image={film}/>
+                {props.movies ? (props.movies).slice(0, showMovies).map((movie) => (<MoviesCard key={props.savedMovies ? movie.id : movie._id}
+                                                                                                movie={movie}
+                                                                                                movieInSaved={props.savedMovies ? props.savedMovies.some(item => item.movieId === movie.id) : false}
+                                                                                                handleButtonClick={props.handleButtonClick}
+                                                                                                isSaved={props.isSaved} />)) : null}
             </div>
-            {props.isSaved ? null : <button className="content__more">Ещё</button>}
+            {props.movies && props.movies.length > showMovies ?
+                <button className="content__more" onClick={handleShow}>Ещё</button> : null}
         </div>
     );
 }

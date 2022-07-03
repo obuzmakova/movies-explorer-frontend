@@ -34,9 +34,9 @@ function Header(props) {
                     <Link to="/">
                         <img className="header__logo" alt="Логотип в виде зеленого круга с дыркой по центру" src={headerLogo}/>
                     </Link>
-                    {props.filmText ? <NavLink to="/movies" activeClassName="header__link_active"
+                    {props.filmText ? <NavLink to="/movies" activeClassName="header__link_active" onClick={props.handleChange}
                                                className="header__link">{props.filmText}</NavLink> : null}
-                    {props.saveFilmText ? <NavLink to="/saved-movies" activeClassName="header__link_active"
+                    {props.saveFilmText ? <NavLink to="/saved-movies" activeClassName="header__link_active" onClick={props.handleChange}
                                                    className="header__link">{props.saveFilmText}</NavLink> : null}
                 </div>
                 <nav className="header__logo-nav">

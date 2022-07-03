@@ -1,4 +1,3 @@
-
 Api-адрес сервера 51.250.20.110, домен http://cinephile.nomoredomains.work
 
 ## Ссылка на макет
