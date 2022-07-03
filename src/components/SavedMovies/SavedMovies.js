@@ -6,8 +6,9 @@ function SavedMovies(props) {
     return (
         <div>
             <SearchForm isChecked={props.isChecked} handleChange={props.handleChange} handleSearch={props.handleSearch} error={props.error}
-                        clearAllError={props.clearAllError}/>
-            <MoviesCardList movies={props.movies} isSaved={true} savedMovies={props.savedMovies} handleDelete={props.handleDelete} />
+                        handleEmptySearch={props.handleEmptySearch} clearAllError={props.clearAllError} searchValue={props.searchValue}
+                        setSearchValue={props.setSearchValue}/>
+            <MoviesCardList movies={props.movies} isSaved={true} handleButtonClick={props.handleButtonClick} />
         </div>
     );
 }

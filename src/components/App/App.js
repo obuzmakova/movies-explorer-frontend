@@ -30,7 +30,7 @@ function App() {
     const [updateFail, setUpdateFail] = useState('');
     const [updateStatus, setUpdateStatus] = useState('');
     const [searchError, setSearchError] = useState('');
-    const [searchValue, setSearchValue] = useState();
+    const [searchValue, setSearchValue] = useState('');
     const [savedMovies, setSavedMovies] = useState([]);
 
     useEffect(() => {
@@ -46,7 +46,6 @@ function App() {
                     setCurrentUser(user);
                     setLoggedIn(true);
                     handleChangePage();
-                    history.push("/movies");
                 })
                 .catch(() => setLoginFail("Во время входа произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
         } else {
@@ -57,7 +56,13 @@ function App() {
     function handleLogout() {
         localStorage.removeItem('allMovies');
         localStorage.removeItem('jwt');
+        localStorage.removeItem('searchedValue');
+        localStorage.removeItem('checkboxState');
+        localStorage.removeItem('searchedMovies');
+        localStorage.removeItem('searchedSavedMovies');
         setCurrentUser();
+        setMovies();
+        setSavedMovies();
         setLoggedIn(false);
         history.push("/");
     }
@@ -70,34 +75,35 @@ function App() {
         setMenuPopupOpen(false);
     }
 
-    useEffect(() => {
-        if (searchValue) {
-            handleSearch(searchValue);
-        } else if (loggedIn) {
-            handleChangePage();
-        }
-    }, [checkboxState]);
+    // useEffect(() => {
+    //     if (searchValue) {
+    //         handleSearch(searchValue);
+    //     } else if (loggedIn) {
+    //         handleChangePage();
+    //     }
+    // }, [checkboxState]);
 
     function handleCheckboxState() {
         setPreload(true);
         clearAllError();
-        setCheckboxState(!checkboxState);
-        setPreload(false);
-    }
+        const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+        const jwt = localStorage.getItem('jwt');
 
-    function handleLoad(jwt) {
-        setPreload(true);
         main.getUserMovies(jwt)
             .then((movies) => {
-                setSavedMovies(movies);
-                api.getInitialMovies()
-                    .then((movies) => {
-                        localStorage.setItem('allMovies', JSON.stringify(movies));
-                        setMovies(movies);
-                    })
-                    .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
+                if (!checkboxState) {
+                    const resultAll = allMovies.filter(movie => movie.duration < 41);
+                    const resultSaved = movies.filter(movie => movie.duration < 41);
+
+                    setMovies(resultAll);
+                    setSavedMovies(resultSaved);
+                } else {
+                    setMovies(allMovies);
+                    setSavedMovies(movies);
+                }
             })
-            .catch(() => setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"));
+            .catch(() => console.log("Ошибка чтения данных"));
+        setCheckboxState(!checkboxState);
         setPreload(false);
     }
 
@@ -118,51 +124,71 @@ function App() {
         return result;
     }
 
+    function handleEmptySearch() {
+        setMovies(JSON.parse(localStorage.getItem('allMovies')));
+        // setSavedMovies(savedMovies);
+    }
+
     function handleSearch(value) {
         setPreload(true);
         setSearchValue(value);
-        const searchValue = value.toLowerCase();
+        const currentSearchValue = value.toLowerCase();
         const page = window.location.pathname;
-        const allMovies = (page === '/movies') ? JSON.parse(localStorage.getItem('allMovies')) : savedMovies;
-        const filteredAll = searchFilms(searchValue, allMovies);
-        let result = [];
+        const filteredAll = searchFilms(currentSearchValue, JSON.parse(localStorage.getItem('allMovies')));
+        const filteredSaved = (savedMovies ? searchFilms(currentSearchValue, savedMovies) : []);
+        let resultAll = [];
+        let resultSaved = [];
 
         if (checkboxState) {
             filteredAll.forEach((movie) => {
                 if (movie.duration < 41) {
-                    result.push(movie);
+                    resultAll.push(movie);
+                }
+            })
+            filteredSaved.forEach((movie) => {
+                if (movie.duration < 41) {
+                    resultSaved.push(movie);
                 }
             })
         } else {
-            result = filteredAll;
+            resultAll = filteredAll;
+            resultSaved = filteredSaved;
         }
-        (page === '/movies') ? setMovies(result) : setSavedMovies(result);
+        setMovies(resultAll);
+        setSavedMovies(resultSaved);
+        localStorage.setItem('searchedMovies', JSON.stringify(resultAll));
+        localStorage.setItem('searchedSavedMovies', JSON.stringify(resultSaved));
+        localStorage.setItem('searchedValue', value);
+        localStorage.setItem('checkboxState', checkboxState.toString());
         setPreload(false);
-        if (result.length < 1) {
-            setSearchError("Ничего не найдено");
+        if (page === '/movies') {
+            if (resultAll.length < 1) {
+                setSearchError("Ничего не найдено");
+            }
+        } else if (resultSaved.length < 1) {
+                setSearchError("Ничего не найдено");
         }
     }
 
     function handleChangePage() {
-        setSearchValue();
         clearAllError();
-        const allMovies = JSON.parse(localStorage.getItem('allMovies'));
-        const jwt = localStorage.getItem('jwt');
+        const checkboxState = Boolean(localStorage.getItem('checkboxState'));
+        const searchedValue = localStorage.getItem('searchedValue');
+        const allCurrentMovies = JSON.parse(localStorage.getItem('searchedMovies'));
+        const allCurrentSavedMovies = JSON.parse(localStorage.getItem('searchedSavedMovies'));
 
-        main.getUserMovies(jwt)
-            .then((movies) => {
-                if (checkboxState) {
-                    const resultAll = allMovies.filter(movie => movie.duration < 41);
-                    const resultSaved = movies.filter(movie => movie.duration < 41);
-
-                    setMovies(resultAll);
-                    setSavedMovies(resultSaved);
-                } else {
-                    setMovies(allMovies);
-                    setSavedMovies(movies);
-                }
-            })
-            .catch(() => console.log("Ошибка чтения данных"));
+        if (allCurrentMovies) {
+            setMovies(allCurrentMovies);
+        }
+        if (checkboxState) {
+            setCheckboxState(checkboxState);
+        }
+        if (searchedValue) {
+            setSearchValue(searchedValue);
+        }
+        if (allCurrentSavedMovies) {
+            setSavedMovies(allCurrentSavedMovies);
+        }
     }
 
     function handleUpdate({name, email}) {
@@ -183,18 +209,23 @@ function App() {
         main.authorize(email, password)
             .then((data) => {
                 let jwt = data.token;
-
                 localStorage.setItem('jwt', jwt);
-                main.getUserInfo(jwt)
-                    .then((user) => {
+                Promise.all([main.getUserInfo(jwt), main.getUserMovies(jwt), api.getInitialMovies()])
+                    .then(([user, userMovies, movies]) => {
+                        setPreload(true);
                         setCurrentUser(user);
-                        handleLoad(jwt);
-                    })
-                    .then(() => {
+                        setMovies(movies);
+                        if (userMovies.length > 0) {
+                            setSavedMovies(userMovies);
+                        }
                         setLoggedIn(true);
+                        localStorage.setItem('allMovies', JSON.stringify(movies));
                         history.push("/movies");
+                        setPreload(false);
                     })
-                    .catch(() => console.log("Ошибка чтения пользовательских данных"))
+                    .catch((err) => {
+                        setFail("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз");
+                    });
             })
             .catch((data) => {
                 if (data === 401) {
@@ -220,25 +251,39 @@ function App() {
             });
     }
 
-    function handleDelete(movieId) {
+    function handleButtonClick(movie) {
+        const page = window.location.pathname;
         const jwt = localStorage.getItem('jwt');
+        if (page === '/movies') {
+            const savedMovie = savedMovies.find(item => item.movieId === movie.id);
+            if (savedMovie !== undefined) {
+                main.deleteMovie(savedMovie._id, jwt)
+                    .then(() => {
+                        main.getUserMovies(jwt)
+                            .then((userMovies) => {
+                                setSavedMovies(userMovies);
+                            })
+                    })
+                    .catch(() => console.log("Фильм не удалось удалить"));
+            } else {
+                main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description,
+                    movie.image, movie.trailerLink, movie.nameRU, movie.nameEN, movie.image, movie.id, jwt)
+                    .then((movie) => {
+                        setSavedMovies([...savedMovies, movie]);
+                    })
+                    .catch(() => console.log("Фильм не удалось сохранить"));
+            }
+        } else {
+            main.deleteMovie(movie.id, jwt)
+                .then(() => {
+                    main.getUserMovies(jwt)
+                        .then((userMovies) => {
+                            setSavedMovies(userMovies);
+                        })
+                })
+                .catch(() => console.log("Фильм не удалось удалить"));
+        }
 
-        main.deleteMovie(movieId, jwt)
-            .then(() => {
-                handleChangePage();
-            })
-            .catch(() => console.log("Фильм не удалось удалить"));
-    }
-
-    function handleSaveMovie(movie) {
-        const jwt = localStorage.getItem('jwt');
-
-        main.addNewFilm(movie.country, movie.director, movie.duration, movie.year, movie.description,
-            movie.image, movie.trailerLink, movie.nameRU, movie.nameEN, movie.image, movie.id, jwt)
-            .then(() => {
-                handleChangePage();
-            })
-            .catch(() => console.log("Фильм не удалось сохранить"));
     }
 
     function clearAllError() {
@@ -252,7 +297,8 @@ function App() {
             <div className="app">
                 <Switch>
                     <Route exact path="/">
-                        <Header regText="Регистрация" authText="Войти"/>
+                        {loggedIn ? <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={handleChangePage}
+                                            onOpenMenu={handleMenuPopupOpen}/> : <Header regText="Регистрация" authText="Войти"/>}
                         <Main />
                         <Footer />
                     </Route>
@@ -261,16 +307,17 @@ function App() {
                                 onOpenMenu={handleMenuPopupOpen}/>
                         <Movies preload={preload} fail={fail} movies={movies} savedMovies={savedMovies}
                                 isChecked={checkboxState} error={searchError} handleChange={handleCheckboxState}
-                                handleSearch={handleSearch} handleDelete={handleDelete} handleSave={handleSaveMovie}
-                                clearAllError={clearAllError}/>
+                                handleSearch={handleSearch} handleEmptySearch={handleEmptySearch} clearAllError={clearAllError}
+                                searchValue={searchValue} handleButtonClick={handleButtonClick} setSearchValue={setSearchValue}/>
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/saved-movies" loggedIn={loggedIn}>
                         <Header filmText="Фильмы" saveFilmText="Сохраненные фильмы" accountText="Аккаунт" handleChange={handleChangePage}
                                 onOpenMenu={handleMenuPopupOpen}/>
-                        <SavedMovies movies={savedMovies} savedMovies={savedMovies} isChecked={checkboxState} handleSearch={handleSearch}
-                                     handleDelete={handleDelete} handleChange={handleCheckboxState} clearAllError={clearAllError}
-                                     error={searchError}/>
+                        <SavedMovies movies={savedMovies} isChecked={checkboxState} handleSearch={handleSearch}
+                                     handleEmptySearch={handleEmptySearch} handleChange={handleCheckboxState}
+                                     clearAllError={clearAllError} error={searchError} searchValue={searchValue}
+                                     setSearchValue={setSearchValue} handleButtonClick={handleButtonClick}/>
                         <Footer />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/profile" loggedIn={loggedIn}>

@@ -1,12 +1,8 @@
-import React, {useEffect} from 'react';
-import {CurrentUserContext} from '../../context/CurrentUserContext';
+import React from 'react';
 import './MoviesCard.css'
 
 function MoviesCard(props) {
-    const currentUser = React.useContext(CurrentUserContext);
-    const [saved, setSaved] = React.useState(false);
-    const alreadyMoviesSaved = props.savedMovies.find((movie) => movie.nameRU === props.movie.nameRU && movie.owner === currentUser._id);
-    const cardSaveButtonClassName = (`card__save ${saved ? 'card__save_active' : 'card__save'}`);
+    const cardSaveButtonClassName = (`card__save ${props.movieInSaved ? 'card__save_active' : 'card__save'}`);
     const calcDuration = checkDuration(props.movie.duration);
     const movie = {
         country: props.movie.country || 'не указана',
@@ -19,27 +15,6 @@ function MoviesCard(props) {
         nameEN: props.movie.nameEN || 'не указано',
         trailerLink: props.isSaved ? props.movie.trailer : props.movie.trailerLink || 'https://youtube.com',
         year: props.movie.year || 'не указан',
-    }
-
-    useEffect(() => {
-        if (alreadyMoviesSaved) {
-            setSaved(true);
-        }
-    }, [alreadyMoviesSaved])
-
-    function handleCardSave() {
-        const movieInSaved = props.isSaved ? props.savedMovies.find((movie) => movie._id === props.movie._id) :
-            props.savedMovies.find((movie) => movie.movieId === props.movie.id);
-
-        if (props.isSaved && saved && movieInSaved) {
-            if (props.handleDelete(movieInSaved._id)) {
-                setSaved(!saved);
-            }
-        } else if (!movieInSaved) {
-            if (props.handleSave(movie)) {
-                setSaved(!saved);
-            }
-        }
     }
 
     function checkDuration(duration) {
@@ -55,6 +30,10 @@ function MoviesCard(props) {
         }
     }
 
+    function onButtonClick() {
+        props.handleButtonClick(movie);
+    }
+
     return (
         <div className="card">
             <div className="card__description">
@@ -62,8 +41,8 @@ function MoviesCard(props) {
                     <p className="card__film-name">{movie.nameRU}</p>
                     <p className="card__film-duration">{calcDuration}</p>
                 </a>
-                {props.isSaved ? <button type="button" onClick={handleCardSave} className="card__delete"/>
-                    : <button type="button" onClick={handleCardSave} className={cardSaveButtonClassName}/>}
+                {props.isSaved ? <button type="button" onClick={onButtonClick} className="card__delete"/>
+                    : <button type="button" onClick={onButtonClick} className={cardSaveButtonClassName}/>}
             </div>
             <a href={movie.trailerLink} target="_blank">
                 <img className="card__photo" src={movie.image} alt={movie.nameRU}/>

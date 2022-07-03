@@ -8,6 +8,7 @@ function SearchForm(props) {
     const [error, setError] = useState('');
 
     function handleChange(e) {
+        props.setSearchValue(e.target.value);
         props.clearAllError();
         setError('');
         setData(e.target.value);
@@ -16,7 +17,13 @@ function SearchForm(props) {
     function handleSubmit(e) {
         e.preventDefault();
 
-        if (!data || data.length < 2) {
+        if (!data) {
+            props.handleEmptySearch();
+            return;
+        }
+
+        const searchValue = data.replace(/\s/g, '');
+        if (!searchValue) {
             setError("Нужно ввести ключевое слово");
             return;
         }
@@ -27,7 +34,7 @@ function SearchForm(props) {
         <div className="search">
             <form onSubmit={handleSubmit} className="search__area">
                 <img className="search__icon" alt="Лупа" src={searchIcon}/>
-                <input id="search" onChange={handleChange} placeholder="Фильм" className="search__text" required/>
+                <input id="search" onChange={handleChange} placeholder="Фильм" className="search__text" required type="text" value={props.searchValue} />
                 <button type="submit" className="search__button" onClick={handleSubmit}/>
             </form>
             <FilterCheckbox isChecked={props.isChecked} handleChange={props.handleChange}/>

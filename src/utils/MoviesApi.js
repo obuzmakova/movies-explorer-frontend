@@ -11,7 +11,7 @@ export const getInitialMovies = () => {
     return fetch(BASE_URL, {
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'app;ication/json'
+            'Content-Type': 'application/json'
         }
     })
         .then((res) => checkResponse(res));

@@ -28,14 +28,13 @@ function MoviesCardList(props) {
     return (
         <div className="content">
             <div className="content__elements">
-                {(props.movies).slice(0, showMovies).map((movie) => (<MoviesCard key={movie.id}
-                                                                                 movie={movie}
-                                                                                 savedMovies={props.savedMovies}
-                                                                                 handleSave={props.handleSave}
-                                                                                 handleDelete={props.handleDelete}
-                                                                                 isSaved={props.isSaved} />))}
+                {props.movies ? (props.movies).slice(0, showMovies).map((movie) => (<MoviesCard key={props.savedMovies ? movie.id : movie._id}
+                                                                                                movie={movie}
+                                                                                                movieInSaved={props.savedMovies ? props.savedMovies.some(item => item.movieId === movie.id) : false}
+                                                                                                handleButtonClick={props.handleButtonClick}
+                                                                                                isSaved={props.isSaved} />)) : null}
             </div>
-            {props.movies.length > showMovies ?
+            {props.movies && props.movies.length > showMovies ?
                 <button className="content__more" onClick={handleShow}>Ещё</button> : null}
         </div>
     );
